@@ -39,7 +39,12 @@ public class Character : GameElement
 
     protected override void Init()
     {
-        actions.Add(new Move());
-        actions.Add(new Attack());
+        Action move = FindObjectOfType<ActionsStorage>().GetActionByName("Move");
+        move.Initialize(this);
+        actions.Add(move);
+
+        Action attack = FindObjectOfType<ActionsStorage>().GetActionByName("Attack");
+        attack.Initialize(this);
+        actions.Add(attack);
     }
 }
