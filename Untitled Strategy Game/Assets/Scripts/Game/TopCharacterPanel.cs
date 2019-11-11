@@ -11,7 +11,7 @@ public class TopCharacterPanel : MonoBehaviour
         ClearBar();
         AddListOfCharacters(startCharacters);
         AddSeparator();
-        //AddListOfCharacters(startCharacters);
+        AddListOfCharacters(startCharacters);
     }
 
     public void SetTopBar(List<Character> currentTurnCharacters, List<Character> nextTurnCharacters)
@@ -19,7 +19,7 @@ public class TopCharacterPanel : MonoBehaviour
         ClearBar();
         AddListOfCharacters(currentTurnCharacters);
         AddSeparator();
-        //AddListOfCharacters(nextTurnCharacters);
+        AddListOfCharacters(nextTurnCharacters);
     }
 
 

@@ -3,6 +3,7 @@
 public class Grid : MonoBehaviour
 {
     public Transform hexPrefab;
+    int id = 0;
 
     int gridWidth;
     int gridHeight;
@@ -75,6 +76,9 @@ public class Grid : MonoBehaviour
                 hex.parent = transform;
                 hex.name = "Hex " + x + "x" + y;
                 //hex.GetComponent<HexGame>().enabled = false;
+                hex.GetComponent<HexGame>().id = id;
+                FindObjectOfType<Storage>().hexes.Add(hex.GetComponent<HexGame>());
+                id++;
             }
         }
     }
