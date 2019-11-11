@@ -9,5 +9,5 @@ public abstract class Action : ScriptableObject
     public Sprite artwork;
 
     public abstract void Initialize(Character character);
-    public abstract void Use(Character character, GameObject hex);
+    public abstract bool Use(Character character, HexGame hex);
 }

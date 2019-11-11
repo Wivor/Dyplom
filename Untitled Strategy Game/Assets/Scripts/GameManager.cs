@@ -4,7 +4,7 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    public List<Character> Characters = new List<Character>();
+    Storage storage;
 
     public List<Character> currentTurnCharacters = new List<Character>();
     List<Character> nextTurnCharacters = new List<Character>();
@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public Canvas GameCanvas;
 
     public int Queue;
+    public int selectedActionID;
     public int CharacterID;
     public GameState GameState;
 
@@ -20,6 +21,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        storage = FindObjectOfType<Storage>();
+
         CharacterID = 0;
         turn = 1;
         GameState = GameState.Editor;
@@ -37,12 +40,11 @@ public class GameManager : MonoBehaviour
 
         EventManager.EventTrigger();
 
-        Characters.ForEach(character => character.Initiative += Random.Range(-10, 10));
+        storage.characters.ForEach(character => character.Initiative += Random.Range(-10, 10));
 
-        currentTurnCharacters.AddRange(Characters);
+        currentTurnCharacters.AddRange(storage.characters);
 
         SortCharactersByInitiative(ref currentTurnCharacters);
-        SortCharactersByInitiative(ref Characters);
         AddQueueTo(currentTurnCharacters);
 
         FindObjectOfType<TopCharacterPanel>().OnStart(currentTurnCharacters);
@@ -55,13 +57,12 @@ public class GameManager : MonoBehaviour
 
         currentTurnCharacters.Remove(currentTurnCharacters.First());
         
-        nextTurnCharacters = Characters;
+        nextTurnCharacters = storage.characters;
         SortCharactersByInitiative(ref nextTurnCharacters);
-        SortCharactersByInitiative(ref Characters);
         FindObjectOfType<TopCharacterPanel>().SetTopBar(currentTurnCharacters, nextTurnCharacters);
 
         Queue++;
-        if (Queue == Characters.Count)
+        if (Queue == storage.characters.Count)
         {
             currentTurnCharacters = nextTurnCharacters;
             AddQueueTo(currentTurnCharacters);
@@ -73,18 +74,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void TriggerAction(int characterID, int actionID, int hexID)
+    {
+        Character character = storage.GetCharacterByID(characterID);
+        Action action = storage.GetActionByID(actionID);
+        HexGame hex = storage.GetHexByID(hexID);
+
+        if(character.getActionByID(actionID).Use(character, hex))
+            EndTurn();
+    }
+
     public void OnActionPress(Action action)
     {
-        Debug.Log("Pressed");
-        Debug.Log(action.actionName);
-        Debug.Log(currentTurnCharacters[Queue].Name);
+        selectedActionID = action.id;
     }
 
     public void AddNewCharacter(Character character)
     {
-        character.ID = CharacterID;
+        character.id = CharacterID;
         character.Name = CharacterID.ToString();
-        Characters.Add(character);
+        storage.characters.Add(character);
         CharacterID++;
     }
     

@@ -7,7 +7,7 @@ public class Character : GameElement
 
     public List<Action> actions = new List<Action>();
 
-    public int ID;
+    public int id;
     public string Owner;
     public int Attack = 10;
     public int Initiative = 10;
@@ -39,12 +39,17 @@ public class Character : GameElement
 
     protected override void Init()
     {
-        Action move = FindObjectOfType<ActionsStorage>().GetActionByName("Move");
+        Action move = FindObjectOfType<Storage>().GetActionByName("Move");
         move.Initialize(this);
         actions.Add(move);
 
-        Action attack = FindObjectOfType<ActionsStorage>().GetActionByName("Attack");
+        Action attack = FindObjectOfType<Storage>().GetActionByName("Attack");
         attack.Initialize(this);
         actions.Add(attack);
+    }
+
+    public Action getActionByID(int id)
+    {
+        return actions.Find(action => action.id == id);
     }
 }

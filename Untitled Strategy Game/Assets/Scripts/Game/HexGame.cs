@@ -2,6 +2,7 @@
 
 public class HexGame : MonoBehaviour
 {
+    public int id;
     GameManager gameManager;
 
     void Start()
@@ -12,11 +13,8 @@ public class HexGame : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if (!isOccupied())
-        {
-            gameManager.currentTurnCharacters[0].transform.SetParent(transform, false);
-            gameManager.EndTurn();
-        }
+        gameManager.TriggerAction(gameManager.currentTurnCharacters[0].id, gameManager.selectedActionID, id);
+        //currentTurnCharacters[0].transform.SetParent(transform, false);
     }
 
     public bool isOccupied()

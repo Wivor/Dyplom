@@ -1,15 +1,20 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu (menuName = "Actions/Move")]
-public class MoveScript : Action
+public class Move : Action
 {
     public override void Initialize(Character character)
     {
         range = character.Movement;
     }
 
-    public override void Use(Character character, GameObject hex)
+    public override bool Use(Character character, HexGame hex)
     {
-        character.transform.SetParent(hex.transform, false);
+        if (!hex.isOccupied())
+        {
+            character.transform.SetParent(hex.transform, false);
+            return true;
+        }
+        return false;
     }
 }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332926addb85c2747b61413a24230905, type: 3}
   m_Name: Attack
   m_EditorClassIdentifier: 
-  id: 0
-  actionName: Default
+  id: 1
+  actionName: Attack
   cooldown: 0
   range: 1
-  artwork: {fileID: 0}
+  artwork: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}

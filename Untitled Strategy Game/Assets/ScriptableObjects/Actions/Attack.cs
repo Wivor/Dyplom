@@ -8,8 +8,9 @@ public class Attack : Action
         range = character.Range;
     }
 
-    public override void Use(Character character, GameObject hex)
+    public override bool Use(Character character, HexGame hex)
     {
-        character.transform.SetParent(hex.transform, false);
+        hex.GetComponentInChildren<Character>().CurrentHealth -= character.Attack;
+        return true;
     }
 }
