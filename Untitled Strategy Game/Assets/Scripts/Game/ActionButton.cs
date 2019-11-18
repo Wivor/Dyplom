@@ -14,5 +14,7 @@ public class ActionButton : MonoBehaviour
     public void OnClick()
     {
         FindObjectOfType<GameManager>().OnActionPress(Action);
+        Character character = FindObjectOfType<GameManager>().currentTurnCharacters[0];
+        Action.OnSelect(character, character.transform.parent.GetComponent<HexGame>());
     }
 }

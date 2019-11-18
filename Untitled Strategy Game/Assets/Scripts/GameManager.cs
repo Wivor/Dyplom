@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
         EditorCanvas.enabled = true;
 
         FindObjectOfType<TurnChanger>().TurnText.text = "Turn 1";
+
+        InitializeActions();
     }
 
     public void StartGame()
@@ -111,5 +113,16 @@ public class GameManager : MonoBehaviour
     {
         characters = characters.OrderBy(character => character.Initiative).ToList();
         characters.Reverse();
+    }
+
+    private static void InitializeActions()
+    {
+        foreach (Character character in FindObjectOfType<Storage>().characters)
+        {
+            foreach (Action action in character.actions)
+            {
+                action.Initialize(character);
+            }
+        }
     }
 }

@@ -15,5 +15,6 @@ MonoBehaviour:
   id: 1
   actionName: Attack
   cooldown: 0
-  range: 1
+  range: 5
   artwork: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  inRangeMaterial: {fileID: 2100000, guid: 14e5245e01f2580458c8c047ab314def, type: 2}

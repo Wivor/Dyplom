@@ -8,9 +8,14 @@ public class Move : Action
         range = character.Movement;
     }
 
+    public override void OnSelect(Character character, HexGame hex)
+    {
+        
+    }
+
     public override bool Use(Character character, HexGame hex)
     {
-        if (!hex.isOccupied())
+        if (!hex.IsOccupied())
         {
             character.transform.SetParent(hex.transform, false);
             return true;

@@ -13,11 +13,14 @@ public class HexGame : MonoBehaviour
 
     public void OnMouseDown()
     {
-        gameManager.TriggerAction(gameManager.currentTurnCharacters[0].id, gameManager.selectedActionID, id);
-        //currentTurnCharacters[0].transform.SetParent(transform, false);
+        if(enabled)
+        {
+            gameManager.TriggerAction(gameManager.currentTurnCharacters[0].id, gameManager.selectedActionID, id);
+            //currentTurnCharacters[0].transform.SetParent(transform, false);
+        }
     }
 
-    public bool isOccupied()
+    public bool IsOccupied()
     {
         if (transform.childCount == 0)
             return false;

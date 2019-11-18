@@ -26,4 +26,9 @@ public class Storage : MonoBehaviour
     {
         return hexes.Find(hex => hex.id == id);
     }
+
+    public HexGame GetHexByPosition(Node.Position position)
+    {
+        return hexes.Find(hex => hex.GetComponent<Node>().position.Equals(position));
+    }
 }

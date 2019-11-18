@@ -26,6 +26,8 @@ public class Grid : MonoBehaviour
        
         CalcStartPos();
         CreateGrid();
+
+        ConnectNeighbours();
     }
 
     public void ClearGrid()
@@ -77,9 +79,48 @@ public class Grid : MonoBehaviour
                 hex.name = "Hex " + x + "x" + y;
                 //hex.GetComponent<HexGame>().enabled = false;
                 hex.GetComponent<HexGame>().id = id;
+                hex.GetComponent<Node>().position = new Node.Position(x, y);
+
                 FindObjectOfType<Storage>().hexes.Add(hex.GetComponent<HexGame>());
                 id++;
             }
+        }
+    }
+
+    void ConnectNeighbours()
+    {
+        foreach (HexGame hex in FindObjectOfType<Storage>().hexes)
+        {
+            Node node = hex.GetComponent<Node>();
+            bool even = node.position.y % 2 == 0;
+
+            if (!even)
+            {
+                AddNeighbour(node, new Node.Position(node.position.x, node.position.y - 1));
+                AddNeighbour(node, new Node.Position(node.position.x + 1, node.position.y - 1));
+                AddNeighbour(node, new Node.Position(node.position.x - 1, node.position.y));
+                AddNeighbour(node, new Node.Position(node.position.x + 1, node.position.y));
+                AddNeighbour(node, new Node.Position(node.position.x, node.position.y + 1));
+                AddNeighbour(node, new Node.Position(node.position.x + 1, node.position.y + 1));
+            }
+            else
+            {
+                AddNeighbour(node, new Node.Position(node.position.x - 1, node.position.y - 1));
+                AddNeighbour(node, new Node.Position(node.position.x, node.position.y - 1));
+                AddNeighbour(node, new Node.Position(node.position.x - 1, node.position.y));
+                AddNeighbour(node, new Node.Position(node.position.x + 1, node.position.y));
+                AddNeighbour(node, new Node.Position(node.position.x - 1, node.position.y + 1));
+                AddNeighbour(node, new Node.Position(node.position.x, node.position.y + 1));
+            }
+            
+        }
+    }
+
+    private static void AddNeighbour(Node node, Node.Position position)
+    {
+        if(FindObjectOfType<Storage>().GetHexByPosition(position) != null)
+        {
+            node.neighbours.Add(FindObjectOfType<Storage>().GetHexByPosition(position).GetComponent<Node>());
         }
     }
 }
