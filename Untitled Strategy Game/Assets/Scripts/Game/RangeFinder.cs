@@ -3,22 +3,46 @@ using UnityEngine;
 
 public class RangeFinder
 {
-    public List<Node> inRange = new List<Node>();
+    public static HashSet<Node> inRange;
 
-    public void FindNodesInRange(Node node, int range, int iteration = 1)
+    static int range;
+
+    public static HashSet<Node> FindNodesInRange(Node sourceNode, int _range)
     {
-        Debug.Log(range);
-        if (range != 0)
+        range = _range;
+        sourceNode.distance = 1;
+        inRange = new HashSet<Node>();
+        FindForRing(new HashSet<Node>(sourceNode.neighbours), 1);
+
+        return inRange;
+    }
+
+    private static void FindForRing(HashSet<Node> nodeRing, int iteration)
+    {
+        Debug.Log(iteration);
+        if (range >= iteration)
         {
-            foreach (Node neighbour in node.neighbours)
+            SetDistance(nodeRing, iteration);
+            inRange.UnionWith(nodeRing);
+            HashSet<Node> nextRing = new HashSet<Node>();
+            foreach (Node node in nodeRing)
             {
-                if(neighbour.distance == 0 || neighbour.distance < iteration)
+                foreach (Node neighbour in node.neighbours)
                 {
-                    neighbour.distance = iteration;
-                    inRange.Add(neighbour);
-                    FindNodesInRange(neighbour, range-1, iteration++);
+                    if(neighbour.distance == 0)
+                        nextRing.Add(neighbour);
                 }
             }
+            Debug.Log(nextRing.Count);
+            FindForRing(nextRing, iteration+1);
+        }
+    }
+
+    private static void SetDistance(HashSet<Node> nodeRing, int iteration)
+    {
+        foreach (Node node in nodeRing)
+        {
+            node.distance = iteration;
         }
     }
 }

@@ -13,10 +13,8 @@ public class Attack : Action
 
     public override void OnSelect(Character character, HexGame hex)
     {
-        RangeFinder rangeFinder = new RangeFinder();
         Debug.Log("Range: " + range);
-        rangeFinder.FindNodesInRange(hex.GetComponent<Node>(), range);
-        foreach(Node node in rangeFinder.inRange)
+        foreach(Node node in RangeFinder.FindNodesInRange(hex.GetComponent<Node>(), range))
         {
             node.GetComponent<Renderer>().material = inRangeMaterial;
         }
