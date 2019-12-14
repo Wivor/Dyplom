@@ -23,7 +23,7 @@ public class Attack : Action
 
     public override bool Use(Character character, Hex hex)
     {
-        hex.GetComponentInChildren<Character>().CurrentHealth -= character.Attack;
+        hex.GetComponentInChildren<Character>().DealDamage(character.Attack);
         return true;
     }
 }

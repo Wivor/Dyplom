@@ -67,18 +67,23 @@ public class GameManager : MonoBehaviour
         nextTurnCharacters = storage.characters;
         SortCharactersByInitiative(ref nextTurnCharacters);
         FindObjectOfType<TopCharacterPanel>().SetTopBar(currentTurnCharacters, nextTurnCharacters);
-
-        Queue++;
-        if (Queue == storage.characters.Count)
+        
+        if (currentTurnCharacters.Count == 0)
         {
             currentTurnCharacters = nextTurnCharacters;
             AddQueueTo(currentTurnCharacters);
             FindObjectOfType<TopCharacterPanel>().OnStart(currentTurnCharacters);
-
-            Queue = 0;
+            
             turn++;
             FindObjectOfType<TurnChanger>().TurnText.text = "Turn " + turn;
         }
+    }
+
+    public void DestroyCharacter(Character character)
+    {
+        FindObjectOfType<Storage>().characters.Remove(character);
+        FindObjectOfType<GameManager>().currentTurnCharacters.Remove(character);
+        FindObjectOfType<GameManager>().nextTurnCharacters.Remove(character);
     }
 
     public void TriggerAction(int characterID, int actionID, int hexID)

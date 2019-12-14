@@ -59,6 +59,16 @@ public class Character : GameElement
         return actions.Find(action => action.id == id);
     }
 
+    public void DealDamage(int dmg)
+    {
+        CurrentHealth -= dmg;
+        if (CurrentHealth <= 0)
+        {
+            FindObjectOfType<GameManager>().DestroyCharacter(this);
+            Destroy(gameObject);
+        }
+    }
+
     void OnEnable()
     {
         EventManager.OnGameStart += ChangeGameState;
