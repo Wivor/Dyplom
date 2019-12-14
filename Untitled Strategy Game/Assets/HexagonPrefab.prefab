@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 8895534726683302394}
   - component: {fileID: 3492099782976330089}
   - component: {fileID: -128164300791664273}
-  - component: {fileID: 2388750573415621921}
   - component: {fileID: -3873667732542687365}
   m_Layer: 0
   m_Name: HexagonPrefab
@@ -127,19 +126,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TeamAmat: {fileID: 2100000, guid: fb03dd516191993499629321d85380a3, type: 2}
   TeamBmat: {fileID: 2100000, guid: 2858a6cdbf9a5dd4bb23f30be7ad944d, type: 2}
---- !u!114 &2388750573415621921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4527538497157404639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ffe9f6bea2455a47b4674e7602192ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   id: 0
+  gameManager: {fileID: 0}
 --- !u!114 &-3873667732542687365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,3 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 144fa105c16a57b4ca649ebb0f0d51cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  position:
+    x: 0
+    y: 0
+  distance: 0
+  neighbours: []

@@ -58,4 +58,14 @@ public class Character : GameElement
     {
         return actions.Find(action => action.id == id);
     }
+
+    void OnEnable()
+    {
+        EventManager.OnGameStart += ChangeGameState;
+    }
+
+    public void ChangeGameState()
+    {
+        gameObject.AddComponent<ClickableInGame>();
+    }
 }

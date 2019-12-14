@@ -9,7 +9,7 @@ public class Attack : Action
         range = character.Range;
     }
 
-    public override void OnSelect(Character character, HexGame hex)
+    public override void OnSelect(Character character, Hex hex)
     {
         inRange = RangeFinder.FindNodesInRange(hex.GetComponent<Node>(), range);
         foreach (Node node in inRange)
@@ -21,7 +21,7 @@ public class Attack : Action
         }
     }
 
-    public override bool Use(Character character, HexGame hex)
+    public override bool Use(Character character, Hex hex)
     {
         hex.GetComponentInChildren<Character>().CurrentHealth -= character.Attack;
         return true;

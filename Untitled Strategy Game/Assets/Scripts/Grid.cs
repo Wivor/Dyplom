@@ -78,10 +78,10 @@ public class Grid : MonoBehaviour
                 hex.parent = transform;
                 hex.name = "Hex " + x + "x" + y;
                 //hex.GetComponent<HexGame>().enabled = false;
-                hex.GetComponent<HexGame>().id = id;
+                hex.GetComponent<Hex>().id = id;
                 hex.GetComponent<Node>().position = new Node.Position(x, y);
 
-                FindObjectOfType<Storage>().hexes.Add(hex.GetComponent<HexGame>());
+                FindObjectOfType<Storage>().hexes.Add(hex.GetComponent<Hex>());
                 id++;
             }
         }
@@ -89,7 +89,7 @@ public class Grid : MonoBehaviour
 
     void ConnectNeighbours()
     {
-        foreach (HexGame hex in FindObjectOfType<Storage>().hexes)
+        foreach (Hex hex in FindObjectOfType<Storage>().hexes)
         {
             Node node = hex.GetComponent<Node>();
             bool even = node.position.y % 2 == 0;

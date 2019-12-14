@@ -15,8 +15,8 @@ public abstract class Action : ScriptableObject
     protected HashSet<Node> inRange;
 
     public abstract void Initialize(Character character);
-    public abstract void OnSelect(Character character, HexGame hex);
-    public abstract bool Use(Character character, HexGame hex);
+    public abstract void OnSelect(Character character, Hex hex);
+    public abstract bool Use(Character character, Hex hex);
 
     public void OnDeselect()
     {

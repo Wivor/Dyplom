@@ -10,7 +10,7 @@ public class Node : MonoBehaviour
 
     public bool IsPassable()
     {
-        return !GetComponent<HexGame>().IsOccupied();
+        return !GetComponent<Hex>().IsOccupied();
     }
 
     [System.Serializable]

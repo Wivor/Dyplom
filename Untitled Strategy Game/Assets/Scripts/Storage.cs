@@ -5,7 +5,7 @@ public class Storage : MonoBehaviour
 {
     public List<Action> actions;
     public List<Character> characters;
-    public List<HexGame> hexes;
+    public List<Hex> hexes;
 
     public Action GetActionByName(string name)
     {
@@ -22,12 +22,12 @@ public class Storage : MonoBehaviour
         return actions.Find(action => action.id == id);
     }
 
-    public HexGame GetHexByID(int id)
+    public Hex GetHexByID(int id)
     {
         return hexes.Find(hex => hex.id == id);
     }
 
-    public HexGame GetHexByPosition(Node.Position position)
+    public Hex GetHexByPosition(Node.Position position)
     {
         return hexes.Find(hex => hex.GetComponent<Node>().position.Equals(position));
     }

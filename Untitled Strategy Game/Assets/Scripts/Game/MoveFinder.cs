@@ -16,7 +16,7 @@ public class MoveFinder
         List<Node> list = new List<Node>();
         foreach(Node node in sourceNode.neighbours)
         {
-            if (!node.GetComponent<HexGame>().IsOccupied())
+            if (!node.GetComponent<Hex>().IsOccupied())
                 list.Add(node);
         }
 
@@ -37,7 +37,7 @@ public class MoveFinder
             {
                 foreach (Node neighbour in node.neighbours)
                 {
-                    if(neighbour.distance == 0 && !neighbour.GetComponent<HexGame>().IsOccupied())
+                    if(neighbour.distance == 0 && !neighbour.GetComponent<Hex>().IsOccupied())
                         nextRing.Add(neighbour);
                 }
             }

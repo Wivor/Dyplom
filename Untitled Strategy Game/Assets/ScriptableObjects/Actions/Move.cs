@@ -8,7 +8,7 @@ public class Move : Action
         range = character.Movement;
     }
 
-    public override void OnSelect(Character character, HexGame hex)
+    public override void OnSelect(Character character, Hex hex)
     {
         inRange = MoveFinder.FindNodesInRange(hex.GetComponent<Node>(), range);
         foreach (Node node in inRange)
@@ -20,7 +20,7 @@ public class Move : Action
         }
     }
 
-    public override bool Use(Character character, HexGame hex)
+    public override bool Use(Character character, Hex hex)
     {
         if (hex.GetComponent<Node>().distance != 0)
         {

@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
     {
         Character character = storage.GetCharacterByID(characterID);
         Action action = storage.GetActionByID(actionID);
-        HexGame hex = storage.GetHexByID(hexID);
+        Hex hex = storage.GetHexByID(hexID);
 
         if(character.getActionByID(actionID).Use(character, hex))
             EndTurn();
