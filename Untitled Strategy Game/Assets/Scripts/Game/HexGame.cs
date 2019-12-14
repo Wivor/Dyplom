@@ -13,9 +13,9 @@ public class HexGame : MonoBehaviour
 
     public void OnMouseDown()
     {
-        if(enabled)
+        if(FindObjectOfType<GameManager>().GameState == GameState.Game)
         {
-            gameManager.TriggerAction(gameManager.currentTurnCharacters[0].id, gameManager.selectedActionID, id);
+            gameManager.TriggerAction(gameManager.currentTurnCharacters[0].id, gameManager.selectedAction.id, id);
             //currentTurnCharacters[0].transform.SetParent(transform, false);
         }
     }

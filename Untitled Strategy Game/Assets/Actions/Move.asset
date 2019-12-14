@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f61afecdf00eb34b9187097b9c56b60, type: 3}
   m_Name: Move
   m_EditorClassIdentifier: 
+  hexPrefab: {fileID: 4418089213644257356, guid: 34b21ca3dd13c004dbb6a7c32565837a,
+    type: 3}
+  material: {fileID: 2100000, guid: 14e5245e01f2580458c8c047ab314def, type: 2}
   id: 0
   actionName: Move
   cooldown: 0

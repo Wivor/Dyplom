@@ -4,8 +4,6 @@
 [System.Serializable]
 public class Attack : Action
 {
-    public Material inRangeMaterial;
-
     public override void Initialize(Character character)
     {
         range = character.Range;
@@ -13,10 +11,13 @@ public class Attack : Action
 
     public override void OnSelect(Character character, HexGame hex)
     {
-        Debug.Log("Range: " + range);
-        foreach(Node node in RangeFinder.FindNodesInRange(hex.GetComponent<Node>(), range))
+        inRange = RangeFinder.FindNodesInRange(hex.GetComponent<Node>(), range);
+        foreach (Node node in inRange)
         {
-            node.GetComponent<Renderer>().material = inRangeMaterial;
+            Transform indicator = Instantiate(hexPrefab) as Transform;
+            indicator.position = node.transform.position;
+            indicator.parent = node.transform;
+            indicator.GetComponent<Renderer>().material = material;
         }
     }
 

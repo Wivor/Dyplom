@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class RangeFinder
+public class MoveFinder
 {
     public static HashSet<Node> inRange;
 
@@ -12,7 +12,15 @@ public class RangeFinder
         range = _range;
         sourceNode.distance = 1;
         inRange = new HashSet<Node>();
-        FindForRing(new HashSet<Node>(sourceNode.neighbours), 1);
+
+        List<Node> list = new List<Node>();
+        foreach(Node node in sourceNode.neighbours)
+        {
+            if (!node.GetComponent<HexGame>().IsOccupied())
+                list.Add(node);
+        }
+
+        FindForRing(new HashSet<Node>(list), 1);
         sourceNode.distance = 0;
 
         return inRange;
@@ -29,7 +37,7 @@ public class RangeFinder
             {
                 foreach (Node neighbour in node.neighbours)
                 {
-                    if(neighbour.distance == 0)
+                    if(neighbour.distance == 0 && !neighbour.GetComponent<HexGame>().IsOccupied())
                         nextRing.Add(neighbour);
                 }
             }

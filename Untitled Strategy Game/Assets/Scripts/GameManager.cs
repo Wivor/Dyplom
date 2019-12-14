@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviour
     public Canvas GameCanvas;
 
     public int Queue;
-    public int selectedActionID;
     public int CharacterID;
+    public Action selectedAction;
     public GameState GameState;
 
     int turn;
@@ -42,7 +42,11 @@ public class GameManager : MonoBehaviour
 
         EventManager.EventTrigger();
 
-        storage.characters.ForEach(character => character.Initiative += Random.Range(-10, 10));
+        storage.characters.ForEach(character => 
+        {
+            character.Initiative += Random.Range(-10, 10);
+            character.InitializeActions();
+        });
 
         currentTurnCharacters.AddRange(storage.characters);
 
@@ -55,6 +59,7 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
+        selectedAction.OnDeselect();
         FindObjectOfType<ActionPanel>().SetActions(currentTurnCharacters[0]);
 
         currentTurnCharacters.Remove(currentTurnCharacters.First());
@@ -88,7 +93,9 @@ public class GameManager : MonoBehaviour
 
     public void OnActionPress(Action action)
     {
-        selectedActionID = action.id;
+        if(selectedAction != null)
+            selectedAction.OnDeselect();
+        selectedAction = action;
     }
 
     public void AddNewCharacter(Character character)

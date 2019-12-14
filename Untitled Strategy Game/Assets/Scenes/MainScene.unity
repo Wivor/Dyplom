@@ -2684,8 +2684,8 @@ MonoBehaviour:
   EditorCanvas: {fileID: 680719674}
   GameCanvas: {fileID: 737700713}
   Queue: 0
-  selectedActionID: 0
   CharacterID: 0
+  selectedAction: {fileID: 0}
   GameState: 0
 --- !u!4 &527927857
 Transform:
