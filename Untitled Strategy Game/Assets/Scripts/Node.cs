@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Node : MonoBehaviour
@@ -11,6 +12,14 @@ public class Node : MonoBehaviour
     public bool IsPassable()
     {
         return !GetComponent<Hex>().IsOccupied();
+    }
+
+    public void AddNeighbour(Position position)
+    {
+        if (FindObjectOfType<Storage>().GetHexByPosition(position) != null)
+        {
+            neighbours.Add(FindObjectOfType<Storage>().GetHexByPosition(position).GetComponent<Node>());
+        }
     }
 
     [System.Serializable]
@@ -28,6 +37,30 @@ public class Node : MonoBehaviour
         public bool Equals(Position position)
         {
             return (x == position.x) && (y == position.y);
+        }
+    }
+
+    internal void ConnectNeighbours()
+    {
+        bool even = position.y % 2 == 0;
+
+        if (!even)
+        {
+            AddNeighbour(new Position(position.x, position.y - 1));
+            AddNeighbour(new Position(position.x + 1, position.y - 1));
+            AddNeighbour(new Position(position.x - 1, position.y));
+            AddNeighbour(new Position(position.x + 1, position.y));
+            AddNeighbour(new Position(position.x, position.y + 1));
+            AddNeighbour(new Position(position.x + 1, position.y + 1));
+        }
+        else
+        {
+            AddNeighbour(new Position(position.x - 1, position.y - 1));
+            AddNeighbour(new Position(position.x, position.y - 1));
+            AddNeighbour(new Position(position.x - 1, position.y));
+            AddNeighbour(new Position(position.x + 1, position.y));
+            AddNeighbour(new Position(position.x - 1, position.y + 1));
+            AddNeighbour(new Position(position.x, position.y + 1));
         }
     }
 }
