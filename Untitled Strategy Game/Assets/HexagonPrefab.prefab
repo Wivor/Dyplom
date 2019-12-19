@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4527538497157404639}
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 2.13, y: -1.39, z: -1.55}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.100000024}
   m_Children: []
   m_Father: {fileID: 0}
@@ -126,7 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TeamAmat: {fileID: 2100000, guid: fb03dd516191993499629321d85380a3, type: 2}
   TeamBmat: {fileID: 2100000, guid: 2858a6cdbf9a5dd4bb23f30be7ad944d, type: 2}
-  id: 0
+  id: 24
   gameManager: {fileID: 0}
 --- !u!114 &-3873667732542687365
 MonoBehaviour:
@@ -141,7 +141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   position:
-    x: 0
-    y: 0
+    x: 4
+    y: 4
   distance: 0
   neighbours: []
