@@ -14,14 +14,6 @@ public class Node : MonoBehaviour
         return !GetComponent<Hex>().IsOccupied();
     }
 
-    public void AddNeighbour(Position position)
-    {
-        if (FindObjectOfType<Storage>().GetHexByPosition(position) != null)
-        {
-            neighbours.Add(FindObjectOfType<Storage>().GetHexByPosition(position).GetComponent<Node>());
-        }
-    }
-
     [System.Serializable]
     public class Position
     {
@@ -40,27 +32,37 @@ public class Node : MonoBehaviour
         }
     }
 
-    internal void ConnectNeighbours()
+    public void ConnectNeighbours()
     {
         bool even = position.y % 2 == 0;
 
         if (!even)
         {
-            AddNeighbour(new Position(position.x, position.y - 1));
-            AddNeighbour(new Position(position.x + 1, position.y - 1));
-            AddNeighbour(new Position(position.x - 1, position.y));
+            //AddNeighbour(new Position(position.x, position.y - 1));
+            //AddNeighbour(new Position(position.x + 1, position.y - 1));
+            //AddNeighbour(new Position(position.x - 1, position.y));
             AddNeighbour(new Position(position.x + 1, position.y));
             AddNeighbour(new Position(position.x, position.y + 1));
             AddNeighbour(new Position(position.x + 1, position.y + 1));
         }
         else
         {
-            AddNeighbour(new Position(position.x - 1, position.y - 1));
-            AddNeighbour(new Position(position.x, position.y - 1));
-            AddNeighbour(new Position(position.x - 1, position.y));
+            //AddNeighbour(new Position(position.x - 1, position.y - 1));
+            //AddNeighbour(new Position(position.x, position.y - 1));
+            //AddNeighbour(new Position(position.x - 1, position.y));
             AddNeighbour(new Position(position.x + 1, position.y));
             AddNeighbour(new Position(position.x - 1, position.y + 1));
             AddNeighbour(new Position(position.x, position.y + 1));
+        }
+    }
+
+    private void AddNeighbour(Position position)
+    {
+        if (FindObjectOfType<Storage>().GetHexByPosition(position) != null)
+        {
+            Node node = FindObjectOfType<Storage>().GetHexByPosition(position).GetComponent<Node>();
+            neighbours.Add(node);
+            node.neighbours.Add(this);
         }
     }
 }
