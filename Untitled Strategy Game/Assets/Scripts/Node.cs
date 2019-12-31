@@ -14,7 +14,7 @@ public class Node : MonoBehaviour
         return !GetComponent<Hex>().IsOccupied();
     }
 
-    [System.Serializable]
+    [Serializable]
     public class Position
     {
         public int x;
@@ -58,9 +58,9 @@ public class Node : MonoBehaviour
 
     private void AddNeighbour(Position position)
     {
-        if (FindObjectOfType<Storage>().GetHexByPosition(position) != null)
+        if (Storage.GetHexByPosition(position) != null)
         {
-            Node node = FindObjectOfType<Storage>().GetHexByPosition(position).GetComponent<Node>();
+            Node node = Storage.GetHexByPosition(position).GetComponent<Node>();
             neighbours.Add(node);
             node.neighbours.Add(this);
         }

@@ -42,13 +42,13 @@ public class GameManager : MonoBehaviour
 
         EventManager.EventTrigger();
 
-        storage.characters.ForEach(character => 
+        Storage.characters.ForEach(character => 
         {
             character.Initiative += Random.Range(-10, 10);
             character.InitializeActions();
         });
 
-        currentTurnCharacters.AddRange(storage.characters);
+        currentTurnCharacters.AddRange(Storage.characters);
 
         SortCharactersByInitiative(ref currentTurnCharacters);
         AddQueueTo(currentTurnCharacters);
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour
 
         currentTurnCharacters.Remove(currentTurnCharacters.First());
         
-        nextTurnCharacters = storage.characters;
+        nextTurnCharacters = Storage.characters;
         SortCharactersByInitiative(ref nextTurnCharacters);
         FindObjectOfType<TopCharacterPanel>().SetTopBar(currentTurnCharacters, nextTurnCharacters);
         
@@ -81,16 +81,16 @@ public class GameManager : MonoBehaviour
 
     public void DestroyCharacter(Character character)
     {
-        FindObjectOfType<Storage>().characters.Remove(character);
+        Storage.characters.Remove(character);
         FindObjectOfType<GameManager>().currentTurnCharacters.Remove(character);
         FindObjectOfType<GameManager>().nextTurnCharacters.Remove(character);
     }
 
     public void TriggerAction(int characterID, int actionID, int hexID)
     {
-        Character character = storage.GetCharacterByID(characterID);
-        Action action = storage.GetActionByID(actionID);
-        Hex hex = storage.GetHexByID(hexID);
+        Character character = Storage.GetCharacterByID(characterID);
+        Action action = FindObjectOfType<Storage>().GetActionByID(actionID);
+        Hex hex = Storage.GetHexByID(hexID);
 
         if(character.getActionByID(actionID).Use(character, hex))
             EndTurn();
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
     {
         character.id = CharacterID;
         character.Name = CharacterID.ToString();
-        storage.characters.Add(character);
+        Storage.characters.Add(character);
         CharacterID++;
     }
     
@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
 
     private static void InitializeActions()
     {
-        foreach (Character character in FindObjectOfType<Storage>().characters)
+        foreach (Character character in Storage.characters)
         {
             foreach (Action action in character.actions)
             {

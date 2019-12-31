@@ -4,15 +4,15 @@ using UnityEngine;
 public class Storage : MonoBehaviour
 {
     public List<Action> actions;
-    public List<Character> characters;
-    public List<Hex> hexes;
+    public static List<Character> characters = new List<Character>();
+    public static List<Hex> hexes = new List<Hex>();
 
     public Action GetActionByName(string name)
     {
         return actions.Find(action => action.actionName.Contains(name));
     }
 
-    public Character GetCharacterByID(int id)
+    public static Character GetCharacterByID(int id)
     {
         return characters.Find(character => character.id == id);
     }
@@ -22,12 +22,12 @@ public class Storage : MonoBehaviour
         return actions.Find(action => action.id == id);
     }
 
-    public Hex GetHexByID(int id)
+    public static Hex GetHexByID(int id)
     {
         return hexes.Find(hex => hex.id == id);
     }
 
-    public Hex GetHexByPosition(Node.Position position)
+    public static Hex GetHexByPosition(Node.Position position)
     {
         return hexes.Find(hex => hex.GetComponent<Node>().position.Equals(position));
     }

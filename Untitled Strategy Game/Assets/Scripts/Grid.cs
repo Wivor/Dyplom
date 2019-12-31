@@ -77,11 +77,10 @@ public class Grid : MonoBehaviour
                 hex.position = CalcWorldPos(gridPos);
                 hex.parent = transform;
                 hex.name = "Hex " + x + "x" + y;
-                //hex.GetComponent<HexGame>().enabled = false;
                 hex.GetComponent<Hex>().id = id;
                 hex.GetComponent<Node>().position = new Node.Position(x, y);
 
-                FindObjectOfType<Storage>().hexes.Add(hex.GetComponent<Hex>());
+                Storage.hexes.Add(hex.GetComponent<Hex>());
                 id++;
             }
         }
@@ -89,7 +88,7 @@ public class Grid : MonoBehaviour
 
     void ConnectNeighbours()
     {
-        foreach (Hex hex in FindObjectOfType<Storage>().hexes)
+        foreach (Hex hex in Storage.hexes)
         {
             Node node = hex.GetComponent<Node>();
             node.ConnectNeighbours();
