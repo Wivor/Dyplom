@@ -7,10 +7,6 @@ public abstract class GameElement : MonoBehaviour
     protected GameStatistics GameStatistics;
     protected MapEditorManager MapEditorManager;
 
-    public string Name = "Blocc";
-    public int CurrentHealth = 100;
-    public int MaxHealth = 100;
-
     void Start()
     {
         GameManager = FindObjectOfType<GameManager>();

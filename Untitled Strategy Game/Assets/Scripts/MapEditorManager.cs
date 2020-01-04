@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class MapEditorManager : MonoBehaviour
 {
     public GameObject SelectedImage;
-    public GameElement SelectedCharacter;
+    public Character SelectedCharacter;
     public Dropdown TeamDropdown;
     public InputField width;
     public InputField height;

@@ -6,7 +6,7 @@ public class Attack : Action
 {
     public override void Initialize(Character character)
     {
-        range = character.Range;
+        range = character.Statistics.Range;
     }
 
     public override void OnSelect(Character character, Hex hex)
@@ -23,7 +23,7 @@ public class Attack : Action
 
     public override bool Use(Character character, Hex hex)
     {
-        hex.GetComponentInChildren<Character>().DealDamage(character.Attack);
+        hex.GetComponentInChildren<Character>().DealDamage(character.Statistics.Attack);
         return true;
     }
 }

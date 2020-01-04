@@ -7,7 +7,7 @@ public class TopBarButton : MonoBehaviour
 
     void Start()
     {
-        GetComponentInChildren<Text>().text = Character.Name.ToString();
+        GetComponentInChildren<Text>().text = Character.Statistics.Name.ToString();
     }
 
     public void OnClick()

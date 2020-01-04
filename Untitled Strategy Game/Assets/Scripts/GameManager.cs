@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
 
         Storage.characters.ForEach(character => 
         {
-            character.Initiative += Random.Range(-10, 10);
+            character.Statistics.Initiative += Random.Range(-10, 10);
             character.InitializeActions();
         });
 
@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
     public void AddNewCharacter(Character character)
     {
         character.id = CharacterID;
-        character.Name = CharacterID.ToString();
+        character.Statistics.Name = CharacterID.ToString();
         Storage.characters.Add(character);
         CharacterID++;
     }
@@ -123,7 +123,7 @@ public class GameManager : MonoBehaviour
 
     private void SortCharactersByInitiative(ref List<Character> characters)
     {
-        characters = characters.OrderBy(character => character.Initiative).ToList();
+        characters = characters.OrderBy(character => character.Statistics.Initiative).ToList();
         characters.Reverse();
     }
 

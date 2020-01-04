@@ -1,20 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ClickableInEditor : MonoBehaviour
 {
-    Hex hex;
-    MapEditorManager mapEditorManager;
-
-    private void Start()
-    {
-        hex = GetComponent<Hex>();
-    }
-
     void OnMouseDown()
     {
-        mapEditorManager = FindObjectOfType<MapEditorManager>();
+        if(GetComponent<Hex>() != null)
+        {
+            HexBehaviour();
+        }
+        else if (GetComponent<Character>() != null)
+        {
+            CharacterBehaviour();
+        }
+    }
+
+    private void CharacterBehaviour()
+    {
+        Character character = GetComponent<Character>();
+        MapEditorManager mapEditorManager = FindObjectOfType<MapEditorManager>();
+
+        mapEditorManager.SelectedCharacter = character;
+        mapEditorManager.SelectedImage = null;
+        FindObjectOfType<EditorStatistics>().SetCharacter(character);
+    }
+
+    private void HexBehaviour()
+    {
+        Hex hex = GetComponent<Hex>();
+        MapEditorManager mapEditorManager = FindObjectOfType<MapEditorManager>();
         if (mapEditorManager.SelectedImage != null && !hex.IsOccupied())
         {
             GameObject obj = Instantiate(mapEditorManager.SelectedImage);

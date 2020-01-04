@@ -5,8 +5,8 @@ public class Grid : MonoBehaviour
     public Transform hexPrefab;
     int id = 0;
 
-    int gridWidth;
-    int gridHeight;
+    public int gridWidth { get; private set; }
+    public int gridHeight { get; private set; }
 
     float hexWidth = 1.732f;
     float hexHeight = 2.0f;

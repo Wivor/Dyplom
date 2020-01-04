@@ -12,18 +12,18 @@ public class GameStatistics : MonoBehaviour
 
     public void SetCharacter(Character character)
     {
-        NameText.text = character.Name.ToString();
-        HeathText.text = character.CurrentHealth.ToString() + " / " + character.MaxHealth.ToString();
-        AttackText.text = character.Attack.ToString();
-        InitiativeText.text = character.Initiative.ToString();
-        RangeText.text = character.Range.ToString();
-        MovementText.text = character.Movement.ToString();
+        NameText.text = character.Statistics.Name.ToString();
+        HeathText.text = character.Statistics.CurrentHealth.ToString() + " / " + character.Statistics.MaxHealth.ToString();
+        AttackText.text = character.Statistics.Attack.ToString();
+        InitiativeText.text = character.Statistics.Initiative.ToString();
+        RangeText.text = character.Statistics.Range.ToString();
+        MovementText.text = character.Statistics.Movement.ToString();
     }
 
     public void SetObstacle(Obstacle obstacle)
     {
-        NameText.text = obstacle.Name.ToString();
-        HeathText.text = obstacle.CurrentHealth.ToString() + " / " + obstacle.MaxHealth.ToString();
+        NameText.text = "-";
+        HeathText.text = "-";
         AttackText.text = "-";
         InitiativeText.text = "-";
         RangeText.text = "-";
