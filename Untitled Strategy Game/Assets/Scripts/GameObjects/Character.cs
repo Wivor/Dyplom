@@ -10,7 +10,6 @@ public class Character : GameElement
     public Statistics Statistics = new Statistics();
 
     public int id;
-    public string Owner;
 
     protected override void Init()
     {

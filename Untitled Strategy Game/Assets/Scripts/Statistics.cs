@@ -3,6 +3,7 @@
 public class Statistics
 {
     public string Name;
+    public string Team;
     public int CurrentHealth;
     public int MaxHealth;
     public int Attack;

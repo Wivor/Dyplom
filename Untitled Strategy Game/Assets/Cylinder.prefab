@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3136647401393591747}
   - component: {fileID: 7101585163627015483}
   - component: {fileID: 818894937307859390}
+  - component: {fileID: 3813958716048613084}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -123,14 +124,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1db69037da9957047bc4c4c497eba121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Cylinder
-  CurrentHealth: 100
-  MaxHealth: 100
   Queue: 0
   actions: []
   id: 0
-  Owner: 
-  Attack: 10
-  Initiative: 10
-  Range: 1
-  Movement: 2
+--- !u!114 &3813958716048613084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 216665920366393055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d615dafc11d5c4c8ea0a09d37dd597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

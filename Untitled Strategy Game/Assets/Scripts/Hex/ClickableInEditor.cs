@@ -35,7 +35,7 @@ public class ClickableInEditor : MonoBehaviour
             obj.transform.parent = transform;
             if (obj.GetComponent<Character>() != null)
             {
-                obj.GetComponent<Character>().Owner = mapEditorManager.TeamDropdown.captionText.text;
+                obj.GetComponent<Character>().Statistics.Team = mapEditorManager.TeamDropdown.captionText.text;
                 FindObjectOfType<GameManager>().AddNewCharacter(obj.GetComponent<Character>());
 
                 if (mapEditorManager.TeamDropdown.captionText.text == "Team A")
