@@ -21,6 +21,8 @@ public class Grid : MonoBehaviour
 
     public void GenerateGrid(int width, int height)
     {
+        ClearGrid();
+
         GridWidth = width;
         GridHeight = height;
        
@@ -32,6 +34,7 @@ public class Grid : MonoBehaviour
 
     public void ClearGrid()
     {
+        Storage.ClearStorage();
         foreach (Transform child in transform)
             Destroy(child.gameObject);
     }
@@ -90,8 +93,7 @@ public class Grid : MonoBehaviour
     {
         foreach (Hex hex in Storage.hexes)
         {
-            Node node = hex.GetComponent<Node>();
-            node.ConnectNeighbours();
+            hex.GetComponent<Node>().ConnectNeighbours();
         }
     }
 }

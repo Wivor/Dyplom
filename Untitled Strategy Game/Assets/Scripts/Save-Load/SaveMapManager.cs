@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class SaveMapManager : MonoBehaviour
 {
     public GameObject characterPrefab;
+    public GameObject obstaclePrefab;
 
     Grid grid;
     JsonSerializer serializer;
@@ -17,25 +18,27 @@ public class SaveMapManager : MonoBehaviour
         serializer = new JsonSerializer();
     }
 
-    public void SaveMap()
+    public void SaveMap(string saveName)
     {
         SaveData saveData = new SaveData(grid.GridHeight, grid.GridWidth);
 
         serializer.Converters.Add(new JavaScriptDateTimeConverter());
         serializer.NullValueHandling = NullValueHandling.Ignore;
 
-        using (StreamWriter sw = new StreamWriter("save.json"))
+        using (StreamWriter sw = new StreamWriter("saves/" + saveName))
         using (JsonWriter writer = new JsonTextWriter(sw))
         {
             serializer.Serialize(writer, saveData);
         }
     }
 
-    public void LoadMap()
+    public void LoadMap(string saveName)
     {
+        grid.ClearGrid();
+
         SaveData saveData;
 
-        using (StreamReader sr = new StreamReader("save.json"))
+        using (StreamReader sr = new StreamReader("saves/" + saveName))
         using (JsonReader reader = new JsonTextReader(sr))
         {
             saveData = serializer.Deserialize<SaveData>(reader);
@@ -47,6 +50,20 @@ public class SaveMapManager : MonoBehaviour
         {
             LoadCharacter(entry.Key, entry.Value);
         }
+
+        foreach (int hexID in saveData.obstacles)
+        {
+            LoadObstacle(hexID);
+        }
+    }
+
+    private void LoadObstacle(int hexID)
+    {
+        GameObject obstacle = Instantiate(obstaclePrefab);
+        Hex hex = Storage.GetHexByID(hexID);
+        obstacle.transform.position = hex.transform.position + new Vector3(0, 2, 0);
+        obstacle.transform.parent = hex.transform;
+        Storage.obstacles.Add(obstacle.transform);
     }
 
     private void LoadCharacter(int hexID, Statistics stats)
@@ -62,5 +79,7 @@ public class SaveMapManager : MonoBehaviour
             character.GetComponent<Renderer>().material = hex.TeamAmat;
         else
             character.GetComponent<Renderer>().material = hex.TeamBmat;
+
+        Storage.characters.Add(character.GetComponent<Character>());
     }
 }

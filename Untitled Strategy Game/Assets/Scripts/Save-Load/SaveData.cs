@@ -14,5 +14,6 @@ public class SaveData
         this.gridWidth= gridWidth;
 
         characters = Storage.characters.ToDictionary(character => character.transform.parent.GetComponent<Hex>().id, character => character.Statistics);
+        obstacles = Storage.obstacles.Select(obstacle => { return obstacle.parent.GetComponent<Hex>().id; }).ToList();
     }
 }

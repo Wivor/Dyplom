@@ -28,7 +28,7 @@ public class Character : GameElement
         }
     }
 
-    public Action getActionByID(int id)
+    public Action GetActionByID(int id)
     {
         return actions.Find(action => action.id == id);
     }

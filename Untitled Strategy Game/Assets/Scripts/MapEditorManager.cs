@@ -12,7 +12,6 @@ public class MapEditorManager : MonoBehaviour
 
     public void GenerateGrid()
     {
-        Grid.ClearGrid();
         Grid.GenerateGrid(int.Parse(width.textComponent.text), int.Parse(height.textComponent.text));
     }
 

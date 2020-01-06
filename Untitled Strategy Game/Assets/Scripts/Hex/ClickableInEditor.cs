@@ -42,7 +42,10 @@ public class ClickableInEditor : MonoBehaviour
                     obj.GetComponent<Renderer>().material = hex.TeamAmat;
                 else
                     obj.GetComponent<Renderer>().material = hex.TeamBmat;
-
+            }
+            if(obj.GetComponent<Obstacle>() != null)
+            {
+                Storage.obstacles.Add(obj.transform);
             }
         }
         else if (mapEditorManager.SelectedCharacter != null && !hex.IsOccupied())
