@@ -34,6 +34,7 @@ public class Grid : MonoBehaviour
 
     public void ClearGrid()
     {
+        id = 0;
         Storage.ClearStorage();
         foreach (Transform child in transform)
             Destroy(child.gameObject);
