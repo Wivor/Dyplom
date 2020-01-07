@@ -79,7 +79,5 @@ public class SaveMapManager : MonoBehaviour
             character.GetComponent<Renderer>().material = hex.TeamAmat;
         else
             character.GetComponent<Renderer>().material = hex.TeamBmat;
-
-        Storage.characters.Add(character.GetComponent<Character>());
     }
 }
