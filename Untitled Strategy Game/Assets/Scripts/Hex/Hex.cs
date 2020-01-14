@@ -24,17 +24,25 @@ public class Hex : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.OnGameStart += ChangeGameState;
+        EventManager.OnGameStart += OnGameStart;
+        EventManager.OnReplayStart += OnEditorStart;
     }
 
     void OnDisable()
     {
-        EventManager.OnGameStart -= ChangeGameState;
+        EventManager.OnGameStart -= OnGameStart;
+        EventManager.OnReplayStart -= OnEditorStart;
     }
 
-    public void ChangeGameState()
+    public void OnGameStart()
     {
         gameObject.AddComponent<ClickableInGame>();
+        Destroy(GetComponent<ClickableInEditor>());
+    }
+
+    public void OnEditorStart()
+    {
+        gameObject.AddComponent<ClickableInReplay>();
         Destroy(GetComponent<ClickableInEditor>());
     }
 }

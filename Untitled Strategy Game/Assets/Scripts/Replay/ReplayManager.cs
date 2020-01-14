@@ -1,16 +1,19 @@
-﻿using UnityEngine;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
 
-public class SaveMapManager : MonoBehaviour
+public class ReplayManager : MonoBehaviour
 {
     public GameObject characterPrefab;
     public GameObject obstaclePrefab;
 
+    int i = 0;
     Grid grid;
+    ReplayData replayData;
     JsonSerializer serializer;
+    Timer timer;
 
     private void Start()
     {
@@ -18,47 +21,74 @@ public class SaveMapManager : MonoBehaviour
         serializer = new JsonSerializer();
     }
 
-    public void SaveMap(string saveName)
+    private void Update()
     {
-        SaveData saveData = new SaveData(grid.GridHeight, grid.GridWidth);
+        if (timer != null)
+            timer.Update();
+    }
 
+    public void CreateReplayData(SaveData mapData)
+    {
+        replayData = new ReplayData(mapData);
+    }
+
+    public void AddStep(int characterID, int actionID, int hexID)
+    {
+        replayData.AddStep(characterID, actionID, hexID);
+    }
+
+    public void SaveReplay(string replayName)
+    {
         serializer.Converters.Add(new JavaScriptDateTimeConverter());
         serializer.NullValueHandling = NullValueHandling.Ignore;
 
-        using (StreamWriter sw = new StreamWriter("saves/" + saveName))
+        using (StreamWriter sw = new StreamWriter("replays/" + replayName))
         using (JsonWriter writer = new JsonTextWriter(sw))
         {
-            serializer.Serialize(writer, saveData);
+            serializer.Serialize(writer, replayData);
         }
     }
-
-    public SaveData GetSaveData()
-    {
-        return new SaveData(grid.GridHeight, grid.GridWidth);
-    }
-
-    public void LoadMap(string saveName)
+    
+    public void LoadReplay(string replayName)
     {
         grid.ClearGrid();
 
-        SaveData saveData;
-
-        using (StreamReader sr = new StreamReader("saves/" + saveName))
+        using (StreamReader sr = new StreamReader("replays/" + replayName))
         using (JsonReader reader = new JsonTextReader(sr))
         {
-            saveData = serializer.Deserialize<SaveData>(reader);
+            replayData = serializer.Deserialize<ReplayData>(reader);
         }
 
-        FindObjectOfType<Grid>().GenerateGrid(saveData.gridWidth, saveData.gridHeight);
+        FindObjectOfType<Grid>().GenerateGrid(replayData.saveData.gridWidth, replayData.saveData.gridHeight);
 
-        foreach (KeyValuePair<int, Statistics> entry in saveData.characters)
+        foreach (KeyValuePair<int, Statistics> entry in replayData.saveData.characters)
         {
             LoadCharacter(entry.Key, entry.Value);
         }
 
-        foreach (int hexID in saveData.obstacles)
+        foreach (int hexID in replayData.saveData.obstacles)
         {
             LoadObstacle(hexID);
+        }
+
+        PlayReplay();
+    }
+
+    public void PlayReplay()
+    {
+        timer = new Timer(Time.deltaTime, 1, DoNextAction);
+    }
+
+    public void DoNextAction()
+    {
+        if (i < replayData.steps.Count)
+        {
+            GetComponent<GameManager>().TriggerActionInReplay(replayData.steps[i][0], replayData.steps[i][1], replayData.steps[i][2]);
+            i++;
+        }
+        else
+        {
+            timer = null;
         }
     }
 

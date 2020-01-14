@@ -45,11 +45,17 @@ public class Character : GameElement
 
     void OnEnable()
     {
-        EventManager.OnGameStart += ChangeGameState;
+        EventManager.OnGameStart += OnGameStart;
+        EventManager.OnReplayStart += OnReplayStart;
     }
 
-    public void ChangeGameState()
+    public void OnGameStart()
     {
         gameObject.AddComponent<ClickableInGame>();
+    }
+
+    public void OnReplayStart()
+    {
+        gameObject.AddComponent<ClickableInReplay>();
     }
 }

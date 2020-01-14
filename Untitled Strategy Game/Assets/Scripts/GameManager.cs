@@ -11,11 +11,11 @@ public class GameManager : MonoBehaviour
 
     public Canvas EditorCanvas;
     public Canvas GameCanvas;
+    public Canvas ReplayCanvas;
 
     public int Queue;
     public int CharacterID;
     public Action selectedAction;
-    public GameState GameState;
 
     int turn;
 
@@ -25,7 +25,6 @@ public class GameManager : MonoBehaviour
 
         CharacterID = 0;
         turn = 1;
-        GameState = GameState.Editor;
         GameCanvas.enabled = false;
         EditorCanvas.enabled = true;
 
@@ -36,11 +35,10 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        GameState = GameState.Game;
         EditorCanvas.enabled = false;
         GameCanvas.enabled = true;
 
-        EventManager.EventTrigger();
+        EventManager.GameStartTrigger();
 
         Storage.characters.ForEach(character => 
         {
@@ -53,13 +51,40 @@ public class GameManager : MonoBehaviour
         SortCharactersByInitiative(ref currentTurnCharacters);
         AddQueueTo(currentTurnCharacters);
 
+        GetComponent<ReplayManager>().CreateReplayData(GetComponent<SaveMapManager>().GetSaveData());
         FindObjectOfType<TopCharacterPanel>().OnStart(currentTurnCharacters);
         FindObjectOfType<ActionPanel>().SetActions(currentTurnCharacters[0]);
     }
 
+    public void StartReplay()
+    {
+        EditorCanvas.enabled = false;
+        GameCanvas.enabled = true;
+
+        GetComponent<ReplayManager>().LoadReplay("test");
+        EventManager.ReplayStartTrigger();
+
+        Storage.characters.ForEach(character =>
+        {
+            character.InitializeActions();
+        });
+
+        currentTurnCharacters.AddRange(Storage.characters);
+
+        SortCharactersByInitiative(ref currentTurnCharacters);
+        AddQueueTo(currentTurnCharacters);
+        
+        FindObjectOfType<TopCharacterPanel>().OnStart(currentTurnCharacters);
+        FindObjectOfType<ActionPanel>().enabled = false;
+    }
+
     public void EndTurn()
     {
-        selectedAction.OnDeselect();
+        GetComponent<ReplayManager>().SaveReplay("test");
+        if (selectedAction != null)
+        {
+            selectedAction.OnDeselect();
+        }
         FindObjectOfType<ActionPanel>().SetActions(currentTurnCharacters[0]);
 
         currentTurnCharacters.Remove(currentTurnCharacters.First());
@@ -92,8 +117,25 @@ public class GameManager : MonoBehaviour
         Action action = FindObjectOfType<Storage>().GetActionByID(actionID);
         Hex hex = Storage.GetHexByID(hexID);
 
-        if(character.GetActionByID(actionID).Use(character, hex))
+        if (character.GetActionByID(actionID).Use(character, hex))
+        {
+            GetComponent<ReplayManager>().AddStep(characterID, actionID, hexID);
             EndTurn();
+        }
+    }
+
+    public void TriggerActionInReplay(int characterID, int actionID, int hexID)
+    {
+        Character character = Storage.GetCharacterByID(characterID);
+        Action action = FindObjectOfType<Storage>().GetActionByID(actionID);
+        Hex hex = Storage.GetHexByID(hexID);
+
+        character.GetActionByID(actionID).OnSelect(character, character.transform.parent.GetComponent<Hex>());
+        if (character.GetActionByID(actionID).Use(character, hex))
+        {
+            character.GetActionByID(actionID).OnDeselect();
+            EndTurn();
+        }
     }
 
     public void OnActionPress(Action action)
