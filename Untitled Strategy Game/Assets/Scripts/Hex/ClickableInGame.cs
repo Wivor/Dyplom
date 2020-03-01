@@ -7,7 +7,7 @@ public class ClickableInGame : MonoBehaviour
         if (GetComponent<Hex>() != null)
         {
             Hex hex = GetComponent<Hex>();
-            hex.gameManager.TriggerAction(hex.gameManager.currentTurnCharacters[0].id, hex.gameManager.selectedAction.id, hex.id);
+            hex.gameManager.TriggerAction(Storage.characters[hex.gameManager.Queue].id, hex.gameManager.selectedAction.id, hex.id);
         }
         else if (GetComponent<Character>() != null)
         {

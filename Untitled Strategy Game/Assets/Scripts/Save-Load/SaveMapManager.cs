@@ -20,7 +20,7 @@ public class SaveMapManager : MonoBehaviour
 
     public void SaveMap(string saveName)
     {
-        SaveData saveData = new SaveData(grid.GridHeight, grid.GridWidth);
+        MapData saveData = new MapData(grid.GridHeight, grid.GridWidth);
 
         serializer.Converters.Add(new JavaScriptDateTimeConverter());
         serializer.NullValueHandling = NullValueHandling.Ignore;
@@ -32,21 +32,21 @@ public class SaveMapManager : MonoBehaviour
         }
     }
 
-    public SaveData GetSaveData()
+    public MapData GetSaveData()
     {
-        return new SaveData(grid.GridHeight, grid.GridWidth);
+        return new MapData(grid.GridHeight, grid.GridWidth);
     }
 
     public void LoadMap(string saveName)
     {
         grid.ClearGrid();
 
-        SaveData saveData;
+        MapData saveData;
 
         using (StreamReader sr = new StreamReader("saves/" + saveName))
         using (JsonReader reader = new JsonTextReader(sr))
         {
-            saveData = serializer.Deserialize<SaveData>(reader);
+            saveData = serializer.Deserialize<MapData>(reader);
         }
 
         FindObjectOfType<Grid>().GenerateGrid(saveData.gridWidth, saveData.gridHeight);

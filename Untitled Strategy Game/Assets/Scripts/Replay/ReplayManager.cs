@@ -27,7 +27,7 @@ public class ReplayManager : MonoBehaviour
             timer.Update();
     }
 
-    public void CreateReplayData(SaveData mapData)
+    public void CreateReplayData(MapData mapData)
     {
         replayData = new ReplayData(mapData);
     }

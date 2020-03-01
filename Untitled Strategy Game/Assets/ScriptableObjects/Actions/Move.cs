@@ -5,7 +5,7 @@ public class Move : Action
 {
     public override void Initialize(Character character)
     {
-        range = character.Statistics.Movement;
+        
     }
 
     public override void OnSelect(Character character, Hex hex)

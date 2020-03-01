@@ -19,4 +19,5 @@ MonoBehaviour:
   actionName: Attack
   cooldown: 0
   range: 1
-  artwork: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  cost: 2
+  artwork: {fileID: 21300000, guid: 23b01f05e560d8546bf612a4a131dcf3, type: 3}

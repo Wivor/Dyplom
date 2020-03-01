@@ -2,10 +2,10 @@
 
 public class ReplayData
 {
-    public SaveData saveData;
+    public MapData saveData;
     public List<int[]> steps;
 
-    public ReplayData(SaveData saveData)
+    public ReplayData(MapData saveData)
     {
         this.saveData = saveData;
         steps = new List<int[]>();

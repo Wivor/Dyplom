@@ -4,6 +4,7 @@ using UnityEngine;
 public class Character : GameElement
 {
     public int Queue;
+    public Agent Agent;
 
     public List<Action> actions = new List<Action>();
 
@@ -18,6 +19,9 @@ public class Character : GameElement
 
         Action attack = FindObjectOfType<Storage>().GetActionByName("Attack");
         actions.Add(attack);
+
+        Action pass = FindObjectOfType<Storage>().GetActionByName("Pass");
+        actions.Add(pass);
     }
 
     public void InitializeActions()

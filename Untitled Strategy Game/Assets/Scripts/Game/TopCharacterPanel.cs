@@ -1,27 +1,52 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class TopCharacterPanel : MonoBehaviour
 {
     public Transform ButtonPrefab;
     public Transform Separator;
+    
+    public List<Character> currentTurnCharacters = new List<Character>();
 
     public void OnStart(List<Character> startCharacters)
     {
+        currentTurnCharacters = new List<Character>(Storage.characters);
         ClearBar();
         AddListOfCharacters(startCharacters);
         AddSeparator();
         AddListOfCharacters(startCharacters);
     }
 
-    public void SetTopBar(List<Character> currentTurnCharacters, List<Character> nextTurnCharacters)
+    public void UpdateTopBar()
+    {
+        if (currentTurnCharacters.Count == 1)
+        {
+            currentTurnCharacters.Remove(currentTurnCharacters.First());
+            currentTurnCharacters = new List<Character>(Storage.characters);
+        }
+        else
+            currentTurnCharacters.Remove(currentTurnCharacters.First());
+
+        UpdateBar();
+    }
+
+    private void UpdateBar()
     {
         ClearBar();
         AddListOfCharacters(currentTurnCharacters);
         AddSeparator();
-        AddListOfCharacters(nextTurnCharacters);
+        AddListOfCharacters(Storage.characters);
     }
 
+    public void RemoveCharacter(Character character)
+    {
+        if (currentTurnCharacters.Contains(character))
+        {
+            currentTurnCharacters.Remove(character);
+            UpdateBar();
+        }
+    }
 
     private void AddListOfCharacters(List<Character> startCharacters)
     {

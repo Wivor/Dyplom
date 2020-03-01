@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-public class SaveData
+public class MapData
 {
     public int gridHeight;
     public int gridWidth;
     public Dictionary<int, Statistics> characters;
     public List<int> obstacles;
 
-    public SaveData(int gridHeight, int gridWidth)
+    public MapData(int gridHeight, int gridWidth)
     {
         this.gridHeight = gridHeight;
         this.gridWidth= gridWidth;

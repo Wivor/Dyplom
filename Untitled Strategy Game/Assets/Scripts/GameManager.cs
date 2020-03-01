@@ -6,25 +6,20 @@ public class GameManager : MonoBehaviour
 {
     Storage storage;
 
-    public List<Character> currentTurnCharacters = new List<Character>();
-    List<Character> nextTurnCharacters = new List<Character>();
-
     public Canvas EditorCanvas;
     public Canvas GameCanvas;
     public Canvas ReplayCanvas;
 
     public int Queue;
-    public int CharacterID;
+    public int CharacterID = 0;
     public Action selectedAction;
 
-    int turn;
+    int turn = 1;
 
     void Start()
     {
         storage = FindObjectOfType<Storage>();
-
-        CharacterID = 0;
-        turn = 1;
+        
         GameCanvas.enabled = false;
         EditorCanvas.enabled = true;
 
@@ -46,14 +41,12 @@ public class GameManager : MonoBehaviour
             character.InitializeActions();
         });
 
-        currentTurnCharacters.AddRange(Storage.characters);
-
-        SortCharactersByInitiative(ref currentTurnCharacters);
-        AddQueueTo(currentTurnCharacters);
+        SortCharactersByInitiative(ref Storage.characters);
+        AddQueueTo(Storage.characters);
 
         GetComponent<ReplayManager>().CreateReplayData(GetComponent<SaveMapManager>().GetSaveData());
-        FindObjectOfType<TopCharacterPanel>().OnStart(currentTurnCharacters);
-        FindObjectOfType<ActionPanel>().SetActions(currentTurnCharacters[0]);
+        FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
+        FindObjectOfType<ActionPanel>().SetActions(Storage.characters[0]);
     }
 
     public void StartReplay()
@@ -69,46 +62,38 @@ public class GameManager : MonoBehaviour
             character.InitializeActions();
         });
 
-        currentTurnCharacters.AddRange(Storage.characters);
-
-        SortCharactersByInitiative(ref currentTurnCharacters);
-        AddQueueTo(currentTurnCharacters);
+        SortCharactersByInitiative(ref Storage.characters);
+        AddQueueTo(Storage.characters);
         
-        FindObjectOfType<TopCharacterPanel>().OnStart(currentTurnCharacters);
+        FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         FindObjectOfType<ActionPanel>().enabled = false;
     }
 
     public void EndTurn()
     {
+        Queue++;
         GetComponent<ReplayManager>().SaveReplay("test");
+
         if (selectedAction != null)
         {
             selectedAction.OnDeselect();
         }
-        FindObjectOfType<ActionPanel>().SetActions(currentTurnCharacters[0]);
-
-        currentTurnCharacters.Remove(currentTurnCharacters.First());
         
-        nextTurnCharacters = Storage.characters;
-        SortCharactersByInitiative(ref nextTurnCharacters);
-        FindObjectOfType<TopCharacterPanel>().SetTopBar(currentTurnCharacters, nextTurnCharacters);
-        
-        if (currentTurnCharacters.Count == 0)
+        if (Queue == Storage.characters.Count)
         {
-            currentTurnCharacters = nextTurnCharacters;
-            AddQueueTo(currentTurnCharacters);
-            FindObjectOfType<TopCharacterPanel>().OnStart(currentTurnCharacters);
-            
+            Queue = 0;
             turn++;
             FindObjectOfType<TurnChanger>().TurnText.text = "Turn " + turn;
         }
+
+        FindObjectOfType<ActionPanel>().SetActions(Storage.characters[Queue]);
+        FindObjectOfType<TopCharacterPanel>().UpdateTopBar();
     }
 
     public void DestroyCharacter(Character character)
     {
         Storage.characters.Remove(character);
-        FindObjectOfType<GameManager>().currentTurnCharacters.Remove(character);
-        FindObjectOfType<GameManager>().nextTurnCharacters.Remove(character);
+        FindObjectOfType<TopCharacterPanel>().RemoveCharacter(character);
     }
 
     public void TriggerAction(int characterID, int actionID, int hexID)
@@ -120,7 +105,11 @@ public class GameManager : MonoBehaviour
         if (character.GetActionByID(actionID).Use(character, hex))
         {
             GetComponent<ReplayManager>().AddStep(characterID, actionID, hexID);
-            EndTurn();
+            character.Statistics.CurrentActionPoints -= action.cost;
+            character.GetActionByID(actionID).OnDeselect();
+
+            if (character.Statistics.CurrentActionPoints == 0)
+                EndTurn();
         }
     }
 
@@ -133,8 +122,11 @@ public class GameManager : MonoBehaviour
         character.GetActionByID(actionID).OnSelect(character, character.transform.parent.GetComponent<Hex>());
         if (character.GetActionByID(actionID).Use(character, hex))
         {
+            character.Statistics.CurrentActionPoints -= action.cost;
             character.GetActionByID(actionID).OnDeselect();
-            EndTurn();
+
+            if (character.Statistics.CurrentActionPoints == 0)
+                EndTurn();
         }
     }
 

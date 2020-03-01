@@ -10,6 +10,8 @@ public class Statistics
     public int Initiative;
     public int Range;
     public int Movement;
+    public int CurrentActionPoints;
+    public int ActionPoints;
 
     public Statistics()
     {
@@ -19,6 +21,8 @@ public class Statistics
         Attack = 10;
         Initiative = 10;
         Range = 1;
-        Movement = 3;
+        Movement = 1;
+        CurrentActionPoints = 5;
+        ActionPoints = 5;
     }
 }

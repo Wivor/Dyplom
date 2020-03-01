@@ -9,6 +9,7 @@ public class GameStatistics : MonoBehaviour
     public Text InitiativeText;
     public Text RangeText;
     public Text MovementText;
+    public Text ActionPointsText;
 
     public void SetCharacter(Character character)
     {
@@ -18,6 +19,7 @@ public class GameStatistics : MonoBehaviour
         InitiativeText.text = character.Statistics.Initiative.ToString();
         RangeText.text = character.Statistics.Range.ToString();
         MovementText.text = character.Statistics.Movement.ToString();
+        ActionPointsText.text = character.Statistics.CurrentActionPoints.ToString();
     }
 
     public void SetObstacle(Obstacle obstacle)
@@ -28,5 +30,6 @@ public class GameStatistics : MonoBehaviour
         InitiativeText.text = "-";
         RangeText.text = "-";
         MovementText.text = "-";
+        ActionPointsText.text = "-";
     }
 }
