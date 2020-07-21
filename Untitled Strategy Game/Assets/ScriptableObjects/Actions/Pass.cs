@@ -10,7 +10,7 @@ public class Pass : Action
 
     public override void OnSelect(Character character, Hex hex = null)
     {
-        FindObjectOfType<GameManager>().TriggerAction(character.id, id, 0);
+        FindObjectOfType<GameManager>().TriggerActionForPlayer(character.id, id, 0);
     }
 
     public override bool Use(Character character, Hex hex = null)

@@ -39,9 +39,15 @@ public class ClickableInEditor : MonoBehaviour
                 FindObjectOfType<GameManager>().AddNewCharacter(obj.GetComponent<Character>());
 
                 if (mapEditorManager.TeamDropdown.captionText.text == "Team A")
+                {
                     obj.GetComponent<Renderer>().material = hex.TeamAmat;
+                    obj.GetComponent<Character>().TeamID = 0;
+                }
                 else
+                {
                     obj.GetComponent<Renderer>().material = hex.TeamBmat;
+                    obj.GetComponent<Character>().TeamID = 1;
+                }
             }
             if(obj.GetComponent<Obstacle>() != null)
             {

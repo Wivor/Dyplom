@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Character : GameElement
 {
+    public int TeamID;
     public int Queue;
-    public Agent Agent;
 
     public List<Action> actions = new List<Action>();
 
@@ -14,6 +14,15 @@ public class Character : GameElement
 
     protected override void Init()
     {
+        if (TeamID == 0)
+        {
+            GetComponent<Agent>().SetType(1);
+        }
+        else
+        {
+            GetComponent<Agent>().SetType(2);
+        }
+
         Action move = FindObjectOfType<Storage>().GetActionByName("Move");
         actions.Add(move);
 

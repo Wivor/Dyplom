@@ -83,7 +83,7 @@ public class ReplayManager : MonoBehaviour
     {
         if (i < replayData.steps.Count)
         {
-            GetComponent<GameManager>().TriggerActionInReplay(replayData.steps[i][0], replayData.steps[i][1], replayData.steps[i][2]);
+            GetComponent<GameManager>().TriggerAction(replayData.steps[i][0], replayData.steps[i][1], replayData.steps[i][2]);
             i++;
         }
         else

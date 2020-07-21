@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour
         GetComponent<ReplayManager>().CreateReplayData(GetComponent<SaveMapManager>().GetSaveData());
         FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         FindObjectOfType<ActionPanel>().SetActions(Storage.characters[0]);
+
+        Storage.characters[Queue].GetComponent<Agent>().TakeAction();
     }
 
     public void StartReplay()
@@ -88,6 +90,7 @@ public class GameManager : MonoBehaviour
 
         FindObjectOfType<ActionPanel>().SetActions(Storage.characters[Queue]);
         FindObjectOfType<TopCharacterPanel>().UpdateTopBar();
+        //Storage.characters[Queue].GetComponent<Agent>().TakeAction();
     }
 
     public void DestroyCharacter(Character character)
@@ -96,7 +99,7 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<TopCharacterPanel>().RemoveCharacter(character);
     }
 
-    public void TriggerAction(int characterID, int actionID, int hexID)
+    public void TriggerActionForPlayer(int characterID, int actionID, int hexID)
     {
         Character character = Storage.GetCharacterByID(characterID);
         Action action = FindObjectOfType<Storage>().GetActionByID(actionID);
@@ -113,7 +116,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void TriggerActionInReplay(int characterID, int actionID, int hexID)
+    public void TriggerAction(int characterID, int actionID, int hexID)
     {
         Character character = Storage.GetCharacterByID(characterID);
         Action action = FindObjectOfType<Storage>().GetActionByID(actionID);
@@ -127,6 +130,12 @@ public class GameManager : MonoBehaviour
 
             if (character.Statistics.CurrentActionPoints == 0)
                 EndTurn();
+            else
+                Storage.characters[Queue].GetComponent<Agent>().TakeAction();
+        }
+        else
+        {
+            character.GetActionByID(actionID).OnDeselect();
         }
     }
 
