@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+/* 
+ * Abstract class for elements that can be placed on the map such as characters or environment.
+ */
+
 public abstract class GameElement : MonoBehaviour
 {
     protected GameManager GameManager;

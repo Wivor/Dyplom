@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+
+/*
+ * Class for moveable characters for players.
+ */
 
 public class Character : GameElement
 {
@@ -11,6 +14,12 @@ public class Character : GameElement
     public Statistics Statistics = new Statistics();
 
     public int id;
+
+    /* 
+     * Method Init is called at the creation of the character.
+     * Agent type is asigned to Agent component.
+     * Basic actions are added to actions list. 
+     */
 
     protected override void Init()
     {
@@ -33,6 +42,10 @@ public class Character : GameElement
         actions.Add(pass);
     }
 
+    /*
+     * Calls Initialize method for every action character has right before start of the game or replay.
+     */
+
     public void InitializeActions()
     {
         foreach (Action action in actions)
@@ -40,11 +53,26 @@ public class Character : GameElement
             action.Initialize(this);
         }
     }
+    
+    /*
+     * Used to get one of actions in actions list.
+     * 
+     * @id int          id of the wanted action
+     * 
+     * @return Action   Action with the given id
+     */
 
     public Action GetActionByID(int id)
     {
         return actions.Find(action => action.id == id);
     }
+
+    /*
+     * Substracts given number from CurrentHealth in Statistics. Used when character is taking damage.
+     * When CurrentHeath drops to 0 or below character object is destroyed.
+     * 
+     * @dmg int     damage taken
+     */
 
     public void DealDamage(int dmg)
     {
@@ -55,6 +83,10 @@ public class Character : GameElement
             Destroy(gameObject);
         }
     }
+
+    /*
+     * Adds events that are called on start of the game or replay.
+     */
 
     void OnEnable()
     {

@@ -16,6 +16,12 @@ public class GameManager : MonoBehaviour
 
     int turn = 1;
 
+    /*
+     * Enables editor canvas and sets turn to 1.
+     * 
+     * #TODO InitializeActions doesn't really initialize anything here
+     */
+
     void Start()
     {
         storage = FindObjectOfType<Storage>();
@@ -27,6 +33,13 @@ public class GameManager : MonoBehaviour
 
         InitializeActions();
     }
+
+    /*
+     * Called when game starts.
+     * Hides editor canvas and enables game canvas, calls EventManager which makes characters clickable,
+     * randomizes initiative for characters, sorts the queue by the result, creates replay object,
+     * sets character on top bar in move order, sets actions on bottom bar for the first moving character.
+     */
 
     public void StartGame()
     {
@@ -42,14 +55,23 @@ public class GameManager : MonoBehaviour
         });
 
         SortCharactersByInitiative(ref Storage.characters);
-        AddQueueTo(Storage.characters);
+        AddQueueNumberTo(Storage.characters);
 
         GetComponent<ReplayManager>().CreateReplayData(GetComponent<SaveMapManager>().GetSaveData());
         FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         FindObjectOfType<ActionPanel>().SetActions(Storage.characters[0]);
 
-        Storage.characters[Queue].GetComponent<Agent>().TakeAction();
+        // #TODO infinite queue
+        //Storage.characters[Queue].GetComponent<Agent>().TakeAction();
     }
+
+    /*
+     * Called when replay starts.
+     * Hides editor canvas and enables game canvas, loads replay file, calls EventManager which makes characters clickable,
+     * initializes characters actions, sorts characters by initiative, sets character on top bar in move order, disables bottom bar.
+     * 
+     * #TODO InitializeActions?
+     */
 
     public void StartReplay()
     {
@@ -65,11 +87,17 @@ public class GameManager : MonoBehaviour
         });
 
         SortCharactersByInitiative(ref Storage.characters);
-        AddQueueTo(Storage.characters);
+        AddQueueNumberTo(Storage.characters);
         
         FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         FindObjectOfType<ActionPanel>().enabled = false;
     }
+
+    /*
+     * Called at the end of character turn.
+     * Adds number to queue, saves move to replay file, deselects action taken, if character was last resets queue,
+     * sets bottom bar for next character, moves characters in top bar.
+     */
 
     public void EndTurn()
     {
@@ -93,11 +121,27 @@ public class GameManager : MonoBehaviour
         //Storage.characters[Queue].GetComponent<Agent>().TakeAction();
     }
 
+    /*
+     * Removes character from storage and destroys its object.
+     * 
+     * @character character to destroy
+     */
+
     public void DestroyCharacter(Character character)
     {
         Storage.characters.Remove(character);
         FindObjectOfType<TopCharacterPanel>().RemoveCharacter(character);
     }
+
+    /*
+     * Called when action is being used.
+     * Takes objects of character, action and hex from storage basing on ids given. Executes action and if action was successfuly used substracts character action points.
+     * If character is out of action point its turn is ended.
+     * 
+     * @characterID     id of character executing action
+     * @actionID        id of action being used
+     * @hexID           id of targeted hex
+     */
 
     public void TriggerActionForPlayer(int characterID, int actionID, int hexID)
     {
@@ -115,6 +159,13 @@ public class GameManager : MonoBehaviour
                 EndTurn();
         }
     }
+
+    /*
+     * Same as above but for AI.
+     * AI does not select action in UI so OnSelect wasn't called.
+     * 
+     * #TODO try to make it one method
+     */
 
     public void TriggerAction(int characterID, int actionID, int hexID)
     {
@@ -139,12 +190,25 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /*
+     * Called when action is pressed on UI.
+     * 
+     * @action      action being pressed. Button on UI holds refference to it
+     */
+
     public void OnActionPress(Action action)
     {
         if(selectedAction != null)
             selectedAction.OnDeselect();
         selectedAction = action;
     }
+
+    /*
+     * Called on creation of new character.
+     * Adds new character to storage.
+     * 
+     * @character       character to add
+     */
 
     public void AddNewCharacter(Character character)
     {
@@ -153,8 +217,12 @@ public class GameManager : MonoBehaviour
         Storage.characters.Add(character);
         CharacterID++;
     }
+
+    /*
+     * Adds move order number to characters.
+     */
     
-    private void AddQueueTo(List<Character> characters)
+    private void AddQueueNumberTo(List<Character> characters)
     {
         int i = 0;
         foreach (Character character in characters)
@@ -164,11 +232,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /*
+     * Sorts character list by their initiative and then reverses it.
+     * 
+     * @characters      list of characters to sort.
+     * 
+     * #TODO could just use descending sort to be honest
+     */
+
     private void SortCharactersByInitiative(ref List<Character> characters)
     {
         characters = characters.OrderBy(character => character.Statistics.Initiative).ToList();
         characters.Reverse();
     }
+
+    /*
+     * Sets statistics of action based on character statistics.
+     */
 
     private static void InitializeActions()
     {

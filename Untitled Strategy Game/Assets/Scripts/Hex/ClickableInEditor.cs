@@ -14,6 +14,10 @@ public class ClickableInEditor : MonoBehaviour
         }
     }
 
+    /*
+     * #TODO move all this to MapEditorManager, think about new way of defining game state
+     */
+
     private void CharacterBehaviour()
     {
         Character character = GetComponent<Character>();

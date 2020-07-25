@@ -2,6 +2,13 @@
 
 public class ClickableInGame : MonoBehaviour
 {
+
+    /*
+     * If state is in game and hex is pressed, selected action is executed.
+     * 
+     * If character is pressed its statistics are displayed in right corner bar.
+     */
+
     public void OnMouseDown()
     {
         if (GetComponent<Hex>() != null)
