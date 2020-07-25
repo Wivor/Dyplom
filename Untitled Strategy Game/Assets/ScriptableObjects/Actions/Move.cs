@@ -35,11 +35,13 @@ public class Move : Action
 
     public override bool Use(Character character, Hex hex)
     {
+        MoveFinder.FindNodesInRange(character.GetComponentInParent<Hex>().GetComponent<Node>(), range);
         if (hex.GetComponent<Node>().distance != 0)
         {
             character.transform.SetParent(hex.transform, false);
             return true;
         }
+        Debug.Log("ID " + character.id + " move: false");
         return false;
     }
 }

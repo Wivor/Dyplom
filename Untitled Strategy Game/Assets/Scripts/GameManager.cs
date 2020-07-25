@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     public Action selectedAction;
 
     int turn = 1;
+    bool AIenabled = true;
+    bool ReplayPlaying = false;
 
     /*
      * Enables editor canvas and sets turn to 1.
@@ -62,7 +64,10 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<ActionPanel>().SetActions(Storage.characters[0]);
 
         // #TODO infinite queue
-        //Storage.characters[Queue].GetComponent<Agent>().TakeAction();
+        if (AIenabled)
+        {
+            Storage.characters[Queue].GetComponent<Agent>().TakeAction();
+        }
     }
 
     /*
@@ -77,6 +82,9 @@ public class GameManager : MonoBehaviour
     {
         EditorCanvas.enabled = false;
         GameCanvas.enabled = true;
+
+        ReplayPlaying = true;
+        AIenabled = false;
 
         GetComponent<ReplayManager>().LoadReplay("test");
         EventManager.ReplayStartTrigger();
@@ -118,7 +126,15 @@ public class GameManager : MonoBehaviour
 
         FindObjectOfType<ActionPanel>().SetActions(Storage.characters[Queue]);
         FindObjectOfType<TopCharacterPanel>().UpdateTopBar();
-        //Storage.characters[Queue].GetComponent<Agent>().TakeAction();
+
+        //infinite queue
+        if (AIenabled)
+        {
+            if(turn <= 2)
+            {
+                Storage.characters[Queue].GetComponent<Agent>().TakeAction();
+            }
+        }
     }
 
     /*
@@ -143,50 +159,25 @@ public class GameManager : MonoBehaviour
      * @hexID           id of targeted hex
      */
 
-    public void TriggerActionForPlayer(int characterID, int actionID, int hexID)
-    {
-        Character character = Storage.GetCharacterByID(characterID);
-        Action action = FindObjectOfType<Storage>().GetActionByID(actionID);
-        Hex hex = Storage.GetHexByID(hexID);
-
-        if (character.GetActionByID(actionID).Use(character, hex))
-        {
-            GetComponent<ReplayManager>().AddStep(characterID, actionID, hexID);
-            character.Statistics.CurrentActionPoints -= action.cost;
-            character.GetActionByID(actionID).OnDeselect();
-
-            if (character.Statistics.CurrentActionPoints == 0)
-                EndTurn();
-        }
-    }
-
-    /*
-     * Same as above but for AI.
-     * AI does not select action in UI so OnSelect wasn't called.
-     * 
-     * #TODO try to make it one method
-     */
-
     public void TriggerAction(int characterID, int actionID, int hexID)
     {
         Character character = Storage.GetCharacterByID(characterID);
         Action action = FindObjectOfType<Storage>().GetActionByID(actionID);
         Hex hex = Storage.GetHexByID(hexID);
 
-        character.GetActionByID(actionID).OnSelect(character, character.transform.parent.GetComponent<Hex>());
         if (character.GetActionByID(actionID).Use(character, hex))
         {
+            if (!ReplayPlaying)
+            {
+                GetComponent<ReplayManager>().AddStep(characterID, actionID, hexID);
+            }
             character.Statistics.CurrentActionPoints -= action.cost;
             character.GetActionByID(actionID).OnDeselect();
 
             if (character.Statistics.CurrentActionPoints == 0)
                 EndTurn();
-            else
+            else if (AIenabled)
                 Storage.characters[Queue].GetComponent<Agent>().TakeAction();
-        }
-        else
-        {
-            character.GetActionByID(actionID).OnDeselect();
         }
     }
 

@@ -41,6 +41,7 @@ public class Attack : Action
             hex.GetComponentInChildren<Character>().DealDamage(character.Statistics.Attack);
             return true;
         }
+        Debug.Log("ID " + character.id + " attack: false");
         return false;
     }
 }
