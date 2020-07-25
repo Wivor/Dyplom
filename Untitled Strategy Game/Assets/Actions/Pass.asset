@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hexPrefab: {fileID: 0}
   material: {fileID: 0}
-  id: 3
+  id: 2
   actionName: Pass
   cooldown: 0
   range: 0

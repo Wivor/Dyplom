@@ -12,6 +12,10 @@ public class Agent : MonoBehaviour
         SetType(1);
     }
 
+    /*
+     * Sets character policy based on its team.
+     */
+
     public void SetType(int type = 0)
     {
         switch (type)
@@ -27,6 +31,14 @@ public class Agent : MonoBehaviour
                 break;
         }
     }
+
+    /*
+     * Takes the bigest value from policy table and checks if there is only one such nymber.
+     * If there is only one biggest number saves index of this number and takes action associated with that index.
+     * If there is more than one takes random action from all aviable.
+     * 
+     * #TODO in case of repititon of the biggest number it should only random from indexes of repeaters.
+     */
 
     public void TakeAction()
     {
@@ -93,6 +105,13 @@ public class Agent : MonoBehaviour
                 break;
         }
     }
+
+    /*
+     * Checks if hex with given position exist and moves character on it if true.
+     * In other case choses to make different action.
+     * 
+     * @position position of hex to move on.
+     */
 
     private void Move(Node.Position position)
     {
