@@ -9,6 +9,10 @@ public class Attack : Action
         range = character.Statistics.Range;
     }
 
+    /*
+     * Saves to inRange set of nodes that are in range of this action. Then adds to its hexes indicators for users as child objects with different color.
+     */
+
     public override void OnSelect(Character character, Hex hex)
     {
         inRange = RangeFinder.FindNodesInRange(hex.GetComponent<Node>(), range);
@@ -21,9 +25,22 @@ public class Attack : Action
         }
     }
 
+    /*
+     * Attacks character on clicked hex if there is any.
+     * 
+     * @character       attacking character
+     * @hex             clicked hex
+     * 
+     * @return bool     returns true if operation was successful or false if not
+     */
+
     public override bool Use(Character character, Hex hex)
     {
-        hex.GetComponentInChildren<Character>().DealDamage(character.Statistics.Attack);
-        return true;
+        if (hex.GetComponentInChildren<Character>() != null)
+        {
+            hex.GetComponentInChildren<Character>().DealDamage(character.Statistics.Attack);
+            return true;
+        }
+        return false;
     }
 }

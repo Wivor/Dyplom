@@ -9,8 +9,15 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     public Position position;
+
+    /*
+     * Distance from node used when calculating distance for pathfinding. 0 stands for current node and nodes out of range.
+     */
     public int distance;
 
+    /*
+     * List of neighbouring nodes.
+     */
     public List<Node> neighbours;
 
     /*
