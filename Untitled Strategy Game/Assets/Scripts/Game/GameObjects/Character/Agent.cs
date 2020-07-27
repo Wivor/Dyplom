@@ -65,7 +65,7 @@ public class Agent : MonoBehaviour
 
         Debug.Log(index);
 
-        Node.Position position = Storage.characters[gameManager.Queue].transform.parent.GetComponent<Node>().position;
+        Node.Position position = Storage.characters[gameManager.getQueue()].transform.parent.GetComponent<Node>().position;
         bool even = position.y % 2 == 0;
 
         switch (index)
@@ -101,7 +101,7 @@ public class Agent : MonoBehaviour
                     Move(new Node.Position(position.x, position.y + 1));
                 break;
             case 6:
-                gameManager.TriggerAction(Storage.characters[gameManager.Queue].id, 2, Storage.GetHexByPosition(position).id);
+                gameManager.TriggerAction(Storage.characters[gameManager.getQueue()].id, 2, Storage.GetHexByPosition(position).id);
                 break;
         }
     }
@@ -116,7 +116,7 @@ public class Agent : MonoBehaviour
     private void Move(Node.Position position)
     {
         if (Storage.GetHexByPosition(position) != null)
-            gameManager.TriggerAction(Storage.characters[gameManager.Queue].id, 0, Storage.GetHexByPosition(position).id);
+            gameManager.TriggerAction(Storage.characters[gameManager.getQueue()].id, 0, Storage.GetHexByPosition(position).id);
         else
             TakeAction();
     }

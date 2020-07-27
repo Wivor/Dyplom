@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,12 +8,14 @@ public class GameManager : MonoBehaviour
     public Canvas GameCanvas;
     public Canvas ReplayCanvas;
 
-    public int Queue;
     public int CharacterID = 0;
     public Action selectedAction;
 
-    int turn = 1;
-    bool AIenabled = true;
+    public bool AIenabled = false;
+    public int turn = 1;
+
+    QueueManager QueueManager;
+
     bool ReplayPlaying = false;
 
     /*
@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         storage = FindObjectOfType<Storage>();
+        QueueManager = GetComponent<QueueManager>();
+        QueueManager.Initialize();
         
         GameCanvas.enabled = false;
         EditorCanvas.enabled = true;
@@ -47,27 +49,13 @@ public class GameManager : MonoBehaviour
     {
         EditorCanvas.enabled = false;
         GameCanvas.enabled = true;
-
-        EventManager.GameStartTrigger();
-
-        Storage.characters.ForEach(character => 
-        {
-            character.Statistics.Initiative += Random.Range(-10, 10);
-            character.InitializeActions();
-        });
-
-        SortCharactersByInitiative(ref Storage.characters);
-        AddQueueNumberTo(Storage.characters);
-
         GetComponent<ReplayManager>().CreateReplayData(GetComponent<SaveMapManager>().GetSaveData());
+        
+        QueueManager.StartGame();
+
         FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         FindObjectOfType<ActionPanel>().SetActions(Storage.characters[0]);
-
-        // #TODO infinite queue
-        if (AIenabled)
-        {
-            Storage.characters[Queue].GetComponent<Agent>().TakeAction();
-        }
+        EventManager.GameStartTrigger();
     }
 
     /*
@@ -89,52 +77,10 @@ public class GameManager : MonoBehaviour
         GetComponent<ReplayManager>().LoadReplay("test");
         EventManager.ReplayStartTrigger();
 
-        Storage.characters.ForEach(character =>
-        {
-            character.InitializeActions();
-        });
-
-        SortCharactersByInitiative(ref Storage.characters);
-        AddQueueNumberTo(Storage.characters);
+        QueueManager.StartReplay();
         
         FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         FindObjectOfType<ActionPanel>().enabled = false;
-    }
-
-    /*
-     * Called at the end of character turn.
-     * Adds number to queue, saves move to replay file, deselects action taken, if character was last resets queue,
-     * sets bottom bar for next character, moves characters in top bar.
-     */
-
-    public void EndTurn()
-    {
-        Queue++;
-        GetComponent<ReplayManager>().SaveReplay("test");
-
-        if (selectedAction != null)
-        {
-            selectedAction.OnDeselect();
-        }
-        
-        if (Queue == Storage.characters.Count)
-        {
-            Queue = 0;
-            turn++;
-            FindObjectOfType<TurnChanger>().TurnText.text = "Turn " + turn;
-        }
-
-        FindObjectOfType<ActionPanel>().SetActions(Storage.characters[Queue]);
-        FindObjectOfType<TopCharacterPanel>().UpdateTopBar();
-
-        //infinite queue
-        if (AIenabled)
-        {
-            if(turn <= 2)
-            {
-                Storage.characters[Queue].GetComponent<Agent>().TakeAction();
-            }
-        }
     }
 
     /*
@@ -175,9 +121,9 @@ public class GameManager : MonoBehaviour
             character.GetActionByID(actionID).OnDeselect();
 
             if (character.Statistics.CurrentActionPoints == 0)
-                EndTurn();
+                QueueManager.EndTurn();
             else if (AIenabled)
-                Storage.characters[Queue].GetComponent<Agent>().TakeAction();
+                Storage.characters[QueueManager.Queue].GetComponent<Agent>().TakeAction();
         }
     }
 
@@ -210,34 +156,6 @@ public class GameManager : MonoBehaviour
     }
 
     /*
-     * Adds move order number to characters.
-     */
-    
-    private void AddQueueNumberTo(List<Character> characters)
-    {
-        int i = 0;
-        foreach (Character character in characters)
-        {
-            character.Queue = i;
-            i++;
-        }
-    }
-
-    /*
-     * Sorts character list by their initiative and then reverses it.
-     * 
-     * @characters      list of characters to sort.
-     * 
-     * #TODO could just use descending sort to be honest
-     */
-
-    private void SortCharactersByInitiative(ref List<Character> characters)
-    {
-        characters = characters.OrderBy(character => character.Statistics.Initiative).ToList();
-        characters.Reverse();
-    }
-
-    /*
      * Sets statistics of action based on character statistics.
      */
 
@@ -250,5 +168,10 @@ public class GameManager : MonoBehaviour
                 action.Initialize(character);
             }
         }
+    }
+
+    public int getQueue()
+    {
+        return QueueManager.Queue;
     }
 }

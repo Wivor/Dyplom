@@ -14,7 +14,7 @@ public class ActionButton : MonoBehaviour
     public void OnClick()
     {
         FindObjectOfType<GameManager>().OnActionPress(Action);
-        Character character = Storage.characters[FindObjectOfType<GameManager>().Queue];
+        Character character = Storage.characters[FindObjectOfType<GameManager>().getQueue()];
         Action.OnSelect(character, character.transform.parent.GetComponent<Hex>());
     }
 }
