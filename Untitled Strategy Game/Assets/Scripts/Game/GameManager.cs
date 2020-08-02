@@ -14,8 +14,10 @@ public class GameManager : MonoBehaviour
     public int CharacterID = 0;
     public Action selectedAction;
 
+    public bool AIenabled = false;
+    public int AITurnNumber = 2;
+
     int turn = 1;
-    bool AIenabled = false;
     bool ReplayPlaying = false;
 
     /*
@@ -150,7 +152,7 @@ public class GameManager : MonoBehaviour
         //infinite queue
         if (AIenabled)
         {
-            if(turn <= 2)
+            if(turn <= AITurnNumber)
             {
                 Storage.characters[Queue].GetComponent<Agent>().TakeAction();
             }
