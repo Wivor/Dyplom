@@ -15,4 +15,10 @@ public class EventManager : MonoBehaviour
     {
         OnReplayStart();
     }
+
+    public static void ClearEvents()
+    {
+        OnGameStart = null;
+        OnReplayStart = null;
+    }
 }

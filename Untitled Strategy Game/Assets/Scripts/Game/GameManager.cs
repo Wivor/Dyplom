@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     public Action selectedAction;
 
     int turn = 1;
-    bool AIenabled = true;
+    bool AIenabled = false;
     bool ReplayPlaying = false;
 
     /*
@@ -99,6 +99,19 @@ public class GameManager : MonoBehaviour
         
         FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         FindObjectOfType<ActionPanel>().enabled = false;
+    }
+
+    public void StartEditor()
+    {
+        EditorCanvas.enabled = true;
+        GameCanvas.enabled = false;
+
+        ReplayPlaying = false;
+        CharacterID = 0;
+
+        Storage.ClearStorage();
+        FindObjectOfType<Grid>().ClearGrid();
+        EventManager.ClearEvents();
     }
 
     /*
