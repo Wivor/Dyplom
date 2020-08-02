@@ -15,6 +15,7 @@ public class Pass : Action
 
     public override bool Use(Character character, Hex hex = null)
     {
+        Debug.Log("ID " + character.id + " passed the turn.");
         character.Statistics.CurrentActionPoints = 0;
         return true;
     }

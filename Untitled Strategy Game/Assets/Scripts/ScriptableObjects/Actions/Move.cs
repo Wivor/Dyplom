@@ -38,10 +38,11 @@ public class Move : Action
         MoveFinder.FindNodesInRange(character.GetComponentInParent<Hex>().GetComponent<Node>(), range);
         if (hex.GetComponent<Node>().distance != 0)
         {
+            Debug.Log("ID " + character.id + " moved: " + hex.GetComponent<Node>().position.ToString());
             character.transform.SetParent(hex.transform, false);
             return true;
         }
-        Debug.Log("ID " + character.id + " move: false");
+        Debug.LogWarning("FAILURE! ID " + character.id + " moved: " + hex.GetComponent<Node>().position.ToString());
         return false;
     }
 }

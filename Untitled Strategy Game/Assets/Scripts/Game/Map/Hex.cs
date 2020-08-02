@@ -18,21 +18,17 @@ public class Hex : MonoBehaviour
         gameObject.AddComponent<ClickableInEditor>();
     }
 
-    // no longer relevant
-
-        /*
-         * Or is it?
-         * 
-         * Checks if hex is occupied. Might cause conflicts with range indicators.
-         * 
-         * #TODO examin this
-         */
+    /*
+     * Checks if hex is occupied by another character or obstacle.
+     * 
+     * @return bool     true if hex is occupied and false if not
+     */
 
     public bool IsOccupied()
     {
-        if (transform.childCount == 0)
-            return false;
-        return true;
+        if (transform.GetComponentInChildren<Character>() != null || transform.GetComponentInChildren<Obstacle>() != null)
+            return true;
+        return false;
     }
 
     /*

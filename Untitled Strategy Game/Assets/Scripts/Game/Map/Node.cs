@@ -59,6 +59,11 @@ public class Node : MonoBehaviour
         {
             return (x == position.x) && (y == position.y);
         }
+
+        public override string ToString()
+        {
+            return x + "," + y;
+        }
     }
 
     /*

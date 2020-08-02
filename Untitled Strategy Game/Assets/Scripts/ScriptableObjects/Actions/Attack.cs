@@ -38,10 +38,11 @@ public class Attack : Action
     {
         if (hex.GetComponentInChildren<Character>() != null)
         {
+            Debug.Log("ID " + character.id + " attacked: " + hex.GetComponent<Node>().position.ToString());
             hex.GetComponentInChildren<Character>().DealDamage(character.Statistics.Attack);
             return true;
         }
-        Debug.Log("ID " + character.id + " attack: false");
+        Debug.LogWarning("-> FAILURE! ID " + character.id + " attack: " + hex.GetComponent<Node>().position.ToString());
         return false;
     }
 }

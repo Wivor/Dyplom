@@ -63,7 +63,7 @@ public class Agent : MonoBehaviour
             index = Random.Range(0, policy[0].Length);
         }
 
-        Debug.Log(index);
+        //Debug.Log(index);
 
         Node.Position position = Storage.characters[gameManager.Queue].transform.parent.GetComponent<Node>().position;
         bool even = position.y % 2 == 0;
