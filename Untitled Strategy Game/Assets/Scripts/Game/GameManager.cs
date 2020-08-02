@@ -101,6 +101,10 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<ActionPanel>().enabled = false;
     }
 
+    /*
+     * Returns to Editor. Disables game canvas and enables editor one. Clears Storage and map. Resets game values.
+     */
+
     public void StartEditor()
     {
         EditorCanvas.enabled = true;
@@ -108,6 +112,7 @@ public class GameManager : MonoBehaviour
 
         ReplayPlaying = false;
         CharacterID = 0;
+        Queue = 0;
 
         Storage.ClearStorage();
         FindObjectOfType<Grid>().ClearGrid();
@@ -135,6 +140,8 @@ public class GameManager : MonoBehaviour
             Queue = 0;
             turn++;
             FindObjectOfType<TurnChanger>().TurnText.text = "Turn " + turn;
+
+            Storage.characters.ForEach(character => character.Statistics.CurrentActionPoints = character.Statistics.ActionPoints);
         }
 
         FindObjectOfType<ActionPanel>().SetActions(Storage.characters[Queue]);
