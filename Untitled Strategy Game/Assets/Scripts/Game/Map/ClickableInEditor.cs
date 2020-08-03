@@ -21,28 +21,28 @@ public class ClickableInEditor : MonoBehaviour
     private void CharacterBehaviour()
     {
         Character character = GetComponent<Character>();
-        MapEditorManager mapEditorManager = FindObjectOfType<MapEditorManager>();
+        MapEditor mapEditor = FindObjectOfType<MapEditor>();
 
-        mapEditorManager.SelectedCharacter = character;
-        mapEditorManager.SelectedImage = null;
+        mapEditor.SelectedCharacter = character;
+        mapEditor.SelectedImage = null;
         FindObjectOfType<EditorStatistics>().SetCharacter(character);
     }
 
     private void HexBehaviour()
     {
         Hex hex = GetComponent<Hex>();
-        MapEditorManager mapEditorManager = FindObjectOfType<MapEditorManager>();
-        if (mapEditorManager.SelectedImage != null && !hex.IsOccupied())
+        MapEditor mapEditor = FindObjectOfType<MapEditor>();
+        if (mapEditor.SelectedImage != null && !hex.IsOccupied())
         {
-            GameObject obj = Instantiate(mapEditorManager.SelectedImage);
+            GameObject obj = Instantiate(mapEditor.SelectedImage);
             obj.transform.position = transform.position + new Vector3(0, 2, 0);
             obj.transform.parent = transform;
             if (obj.GetComponent<Character>() != null)
             {
-                obj.GetComponent<Character>().Statistics.Team = mapEditorManager.TeamDropdown.captionText.text;
+                obj.GetComponent<Character>().Statistics.Team = mapEditor.TeamDropdown.captionText.text;
                 FindObjectOfType<GameManager>().AddNewCharacter(obj.GetComponent<Character>());
 
-                if (mapEditorManager.TeamDropdown.captionText.text == "Team A")
+                if (mapEditor.TeamDropdown.captionText.text == "Team A")
                 {
                     obj.GetComponent<Renderer>().material = hex.TeamAmat;
                     obj.GetComponent<Character>().TeamID = 0;
@@ -58,9 +58,9 @@ public class ClickableInEditor : MonoBehaviour
                 Storage.obstacles.Add(obj.transform);
             }
         }
-        else if (mapEditorManager.SelectedCharacter != null && !hex.IsOccupied())
+        else if (mapEditor.SelectedCharacter != null && !hex.IsOccupied())
         {
-            mapEditorManager.SelectedCharacter.transform.SetParent(transform, false);
+            mapEditor.SelectedCharacter.transform.SetParent(transform, false);
         }
     }
 }

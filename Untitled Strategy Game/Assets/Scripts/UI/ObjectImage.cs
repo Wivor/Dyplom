@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ObjectImage : MonoBehaviour
 {
-    public MapEditorManager Manager;
+    public MapEditor mapEditor;
     public GameObject obj;
 
     public void ChangeSelection()
     {
-        Manager.SelectedImage = obj;
-        Manager.SelectedCharacter = null;
+        mapEditor.SelectedImage = obj;
+        mapEditor.SelectedCharacter = null;
     }
 }

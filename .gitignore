@@ -16,6 +16,7 @@ sysinfo.txt
 ###
 # VS/MD solution and project files
 ###
+.idea/
 .vs/
 [Ee]xportedObj/
 *.booproj
@@ -40,3 +41,4 @@ sysinfo.txt
 Icon?
 ehthumbs.db
 Thumbs.db
+Untitled Strategy Game/replays/*

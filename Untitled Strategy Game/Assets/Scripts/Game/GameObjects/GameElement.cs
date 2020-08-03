@@ -9,14 +9,14 @@ public abstract class GameElement : MonoBehaviour
     protected GameManager GameManager;
     protected EditorStatistics EditorStatistics;
     protected GameStatistics GameStatistics;
-    protected MapEditorManager MapEditorManager;
+    protected MapEditor mapEditor;
 
     void Start()
     {
         GameManager = FindObjectOfType<GameManager>();
         EditorStatistics = FindObjectOfType<EditorStatistics>();
         GameStatistics = FindObjectOfType<GameStatistics>();
-        MapEditorManager = FindObjectOfType<MapEditorManager>();
+        mapEditor = FindObjectOfType<MapEditor>();
         Init();
     }
 

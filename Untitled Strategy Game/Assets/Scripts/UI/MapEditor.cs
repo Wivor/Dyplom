@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class MapEditorManager : MonoBehaviour
+public class MapEditor : MonoBehaviour
 {
     public GameObject SelectedImage;
     public Character SelectedCharacter;

@@ -10,63 +10,68 @@ public class ReplayManager : MonoBehaviour
     public GameObject obstaclePrefab;
 
     int i = 0;
-    Grid grid;
-    ReplayData replayData;
-    JsonSerializer serializer;
-    Timer timer;
+    private Grid _grid;
+    private string _replayName;
+    private ReplayData _replayData;
+    private JsonSerializer _serializer;
+    private Timer _timer;
 
     private void Start()
     {
-        grid = FindObjectOfType<Grid>();
-        serializer = new JsonSerializer();
+        _grid = FindObjectOfType<Grid>();
+        _serializer = new JsonSerializer();
     }
 
     private void Update()
     {
-        if (timer != null)
-            timer.Update();
+        if (_timer != null)
+            _timer.Update();
     }
 
-    public void CreateReplayData(MapData mapData)
+    public void CreateReplayData(string replayName, MapData mapData)
     {
-        replayData = new ReplayData(mapData);
+        _replayName = replayName;
+        _replayData = new ReplayData(mapData);
     }
 
     public void AddStep(int characterID, int actionID, int hexID)
     {
-        replayData.AddStep(characterID, actionID, hexID);
+        _replayData?.AddStep(characterID, actionID, hexID);
     }
 
-    public void SaveReplay(string replayName)
+    public void SaveReplay()
     {
-        serializer.Converters.Add(new JavaScriptDateTimeConverter());
-        serializer.NullValueHandling = NullValueHandling.Ignore;
+        if (_replayData == null)
+            return;
+        
+        _serializer.Converters.Add(new JavaScriptDateTimeConverter());
+        _serializer.NullValueHandling = NullValueHandling.Ignore;
 
-        using (StreamWriter sw = new StreamWriter("replays/" + replayName))
+        using (StreamWriter sw = new StreamWriter("replays/" + _replayName))
         using (JsonWriter writer = new JsonTextWriter(sw))
         {
-            serializer.Serialize(writer, replayData);
+            _serializer.Serialize(writer, _replayData);
         }
     }
     
     public void LoadReplay(string replayName)
     {
-        grid.ClearGrid();
+        _grid.ClearGrid();
 
         using (StreamReader sr = new StreamReader("replays/" + replayName))
         using (JsonReader reader = new JsonTextReader(sr))
         {
-            replayData = serializer.Deserialize<ReplayData>(reader);
+            _replayData = _serializer.Deserialize<ReplayData>(reader);
         }
 
-        FindObjectOfType<Grid>().GenerateGrid(replayData.saveData.gridWidth, replayData.saveData.gridHeight);
+        FindObjectOfType<Grid>().GenerateGrid(_replayData.saveData.gridWidth, _replayData.saveData.gridHeight);
 
-        foreach (KeyValuePair<int, Statistics> entry in replayData.saveData.characters)
+        foreach (KeyValuePair<int, Statistics> entry in _replayData.saveData.characters)
         {
             LoadCharacter(entry.Key, entry.Value);
         }
 
-        foreach (int hexID in replayData.saveData.obstacles)
+        foreach (int hexID in _replayData.saveData.obstacles)
         {
             LoadObstacle(hexID);
         }
@@ -76,19 +81,19 @@ public class ReplayManager : MonoBehaviour
 
     public void PlayReplay()
     {
-        timer = new Timer(Time.deltaTime, 1, DoNextAction);
+        _timer = new Timer(Time.deltaTime, 1, DoNextAction);
     }
 
     public void DoNextAction()
     {
-        if (i < replayData.steps.Count)
+        if (i < _replayData.steps.Count)
         {
-            GetComponent<GameManager>().TriggerAction(replayData.steps[i][0], replayData.steps[i][1], replayData.steps[i][2]);
+            GetComponent<GameManager>().TriggerAction(_replayData.steps[i][0], _replayData.steps[i][1], _replayData.steps[i][2]);
             i++;
         }
         else
         {
-            timer = null;
+            _timer = null;
         }
     }
 
@@ -114,5 +119,10 @@ public class ReplayManager : MonoBehaviour
             character.GetComponent<Renderer>().material = hex.TeamAmat;
         else
             character.GetComponent<Renderer>().material = hex.TeamBmat;
+    }
+
+    public void ClearReplay()
+    {
+        _replayData = null;
     }
 }

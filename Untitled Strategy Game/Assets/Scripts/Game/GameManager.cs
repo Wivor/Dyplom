@@ -4,10 +4,9 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    Storage storage;
-
     public Canvas EditorCanvas;
     public Canvas GameCanvas;
+    public GameObject ActionsPanel;
     public Canvas ReplayCanvas;
 
     public int Queue;
@@ -28,8 +27,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        storage = FindObjectOfType<Storage>();
-        
         GameCanvas.enabled = false;
         EditorCanvas.enabled = true;
 
@@ -61,7 +58,6 @@ public class GameManager : MonoBehaviour
         SortCharactersByInitiative(ref Storage.characters);
         AddQueueNumberTo(Storage.characters);
 
-        GetComponent<ReplayManager>().CreateReplayData(GetComponent<SaveMapManager>().GetSaveData());
         FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         FindObjectOfType<ActionPanel>().SetActions(Storage.characters[0]);
 
@@ -88,9 +84,6 @@ public class GameManager : MonoBehaviour
         ReplayPlaying = true;
         AIenabled = false;
 
-        GetComponent<ReplayManager>().LoadReplay("test");
-        EventManager.ReplayStartTrigger();
-
         Storage.characters.ForEach(character =>
         {
             character.InitializeActions();
@@ -99,8 +92,7 @@ public class GameManager : MonoBehaviour
         SortCharactersByInitiative(ref Storage.characters);
         AddQueueNumberTo(Storage.characters);
         
-        FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
-        FindObjectOfType<ActionPanel>().enabled = false;
+        ActionsPanel.SetActive(false);
     }
 
     /*
@@ -130,7 +122,7 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         Queue++;
-        GetComponent<ReplayManager>().SaveReplay("test");
+        GetComponent<ReplayManager>().SaveReplay();
 
         if (selectedAction != null)
         {

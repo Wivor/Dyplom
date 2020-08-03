@@ -1,1 +1,0 @@
-{"saveData":{"gridHeight":5,"gridWidth":5,"characters":{"12":{"Name":"0","Team":"Team A","CurrentHealth":100,"MaxHealth":100,"Attack":10,"Initiative":13,"Range":1,"Movement":1,"CurrentActionPoints":0,"ActionPoints":5}},"obstacles":[]},"steps":[[0,0,7],[0,0,12],[0,0,13],[0,0,7],[0,2,7],[0,0,6],[0,0,1],[0,0,5],[0,2,5]]}

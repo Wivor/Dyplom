@@ -40,38 +40,38 @@ public class EditorStatistics : MonoBehaviour
 
     public void UpdateCharacterName()
     {
-        FindObjectOfType<MapEditorManager>().SelectedCharacter.Statistics.Name = NameText.text;
+        FindObjectOfType<MapEditor>().SelectedCharacter.Statistics.Name = NameText.text;
     }
 
     public void UpdateCharacterHealth()
     {
-        FindObjectOfType<MapEditorManager>().SelectedCharacter.Statistics.MaxHealth = int.Parse(HeathText.text);
+        FindObjectOfType<MapEditor>().SelectedCharacter.Statistics.MaxHealth = int.Parse(HeathText.text);
     }
 
     public void UpdateCharacterAttack()
     {
-        GameElement element = FindObjectOfType<MapEditorManager>().SelectedCharacter;
+        GameElement element = FindObjectOfType<MapEditor>().SelectedCharacter;
         if (element is Character)
             (element as Character).Statistics.Attack = int.Parse(AttackText.text);
     }
 
     public void UpdateCharacterInitiative()
     {
-        GameElement element = FindObjectOfType<MapEditorManager>().SelectedCharacter;
+        GameElement element = FindObjectOfType<MapEditor>().SelectedCharacter;
         if (element is Character)
             (element as Character).Statistics.Initiative = int.Parse(InitiativeText.text);
     }
 
     public void UpdateCharacterRange()
     {
-        GameElement element = FindObjectOfType<MapEditorManager>().SelectedCharacter;
+        GameElement element = FindObjectOfType<MapEditor>().SelectedCharacter;
         if (element is Character)
             (element as Character).Statistics.Range = int.Parse(RangeText.text);
     }
 
     public void UpdateCharacterMovement()
     {
-        GameElement element = FindObjectOfType<MapEditorManager>().SelectedCharacter;
+        GameElement element = FindObjectOfType<MapEditor>().SelectedCharacter;
         if (element is Character)
             (element as Character).Statistics.Movement = int.Parse(MovementText.text);
     }
