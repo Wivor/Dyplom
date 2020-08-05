@@ -3,10 +3,10 @@ using System.Linq;
 
 public class MapData
 {
-    public int gridHeight;
-    public int gridWidth;
-    public Dictionary<int, Statistics> characters;
-    public List<int> obstacles;
+    public readonly int gridHeight;
+    public readonly int gridWidth;
+    public readonly Dictionary<int, Statistics> characters;
+    public readonly List<int> obstacles;
 
     public MapData(int gridHeight, int gridWidth)
     {
@@ -14,6 +14,6 @@ public class MapData
         this.gridWidth= gridWidth;
 
         characters = Storage.characters.ToDictionary(character => character.transform.parent.GetComponent<Hex>().id, character => character.Statistics);
-        obstacles = Storage.obstacles.Select(obstacle => { return obstacle.parent.GetComponent<Hex>().id; }).ToList();
+        obstacles = Storage.obstacles.Select(obstacle => obstacle.parent.GetComponent<Hex>().id).ToList();
     }
 }

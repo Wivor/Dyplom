@@ -14,14 +14,11 @@ public class AISettings : MonoBehaviour
 
     public void OnToggleA()
     {
-        if (ToggleA.isOn)
-            FindObjectOfType<GameManager>().AIenabled = true;
-        else
-            FindObjectOfType<GameManager>().AIenabled = false;
+        FindObjectOfType<AIManager>().aiEnabled = ToggleA.isOn;
     }
 
     public void TurnChange()
     {
-        FindObjectOfType<GameManager>().AITurnNumber = int.Parse(TurnInput.text);
+        FindObjectOfType<AIManager>().AiTurnNumber = int.Parse(TurnInput.text);
     }
 }

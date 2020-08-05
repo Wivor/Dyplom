@@ -2,63 +2,63 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.IO;
-using System.Collections.Generic;
+using System.Linq;
 
 public class SaveMapManager : MonoBehaviour
 {
     public GameObject characterPrefab;
     public GameObject obstaclePrefab;
 
-    Grid grid;
-    JsonSerializer serializer;
+    private Grid _grid;
+    private JsonSerializer _serializer;
 
     private void Start()
     {
-        grid = FindObjectOfType<Grid>();
-        serializer = new JsonSerializer();
+        _grid = FindObjectOfType<Grid>();
+        _serializer = new JsonSerializer();
     }
 
     public void SaveMap(string saveName)
     {
-        MapData saveData = new MapData(grid.GridHeight, grid.GridWidth);
+        MapData saveData = new MapData(_grid.GridHeight, _grid.GridWidth);
 
-        serializer.Converters.Add(new JavaScriptDateTimeConverter());
-        serializer.NullValueHandling = NullValueHandling.Ignore;
+        _serializer.Converters.Add(new JavaScriptDateTimeConverter());
+        _serializer.NullValueHandling = NullValueHandling.Ignore;
 
         using (StreamWriter sw = new StreamWriter("saves/" + saveName))
         using (JsonWriter writer = new JsonTextWriter(sw))
         {
-            serializer.Serialize(writer, saveData);
+            _serializer.Serialize(writer, saveData);
         }
     }
 
     public MapData GetSaveData()
     {
-        return new MapData(grid.GridHeight, grid.GridWidth);
+        return new MapData(_grid.GridHeight, _grid.GridWidth);
     }
 
     public void LoadMap(string saveName)
     {
-        grid.ClearGrid();
-
-        MapData saveData;
-
         using (StreamReader sr = new StreamReader("saves/" + saveName))
         using (JsonReader reader = new JsonTextReader(sr))
         {
-            saveData = serializer.Deserialize<MapData>(reader);
+            LoadMap(_serializer.Deserialize<MapData>(reader));
         }
+    }
 
-        FindObjectOfType<Grid>().GenerateGrid(saveData.gridWidth, saveData.gridHeight);
+    public void LoadMap(MapData mapData)
+    {
+        _grid.ClearGrid();
+        FindObjectOfType<Grid>().GenerateGrid(mapData.gridWidth, mapData.gridHeight);
 
-        foreach (KeyValuePair<int, Statistics> entry in saveData.characters)
+        foreach (var entry in mapData.characters)
         {
             LoadCharacter(entry.Key, entry.Value);
         }
 
-        foreach (int hexID in saveData.obstacles)
+        foreach (var hexId in mapData.obstacles)
         {
-            LoadObstacle(hexID);
+            LoadObstacle(hexId);
         }
     }
 

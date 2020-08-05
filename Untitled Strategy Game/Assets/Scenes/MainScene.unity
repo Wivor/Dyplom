@@ -3139,6 +3139,7 @@ GameObject:
   - component: {fileID: 527927856}
   - component: {fileID: 527927858}
   - component: {fileID: 527927859}
+  - component: {fileID: 527927860}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3165,8 +3166,6 @@ MonoBehaviour:
   Queue: 0
   CharacterID: 0
   selectedAction: {fileID: 0}
-  AIenabled: 0
-  AITurnNumber: 2
 --- !u!4 &527927857
 Transform:
   m_ObjectHideFlags: 0
@@ -3213,6 +3212,19 @@ MonoBehaviour:
     type: 3}
   obstaclePrefab: {fileID: 3635527772664117996, guid: 2b6449f7df7455a498fa0a86ecf78206,
     type: 3}
+--- !u!114 &527927860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527927855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f13a0a79fe3f0a64698d753f3e638bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aiEnabled: 0
 --- !u!1001 &530893062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3425,7 +3437,7 @@ PrefabInstance:
     - target: {fileID: 7238970272064264529, guid: d6fabd833efcb7144acd90a888578a08,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000014782
+      value: -0.000020981
       objectReference: {fileID: 0}
     - target: {fileID: 7238970272064264529, guid: d6fabd833efcb7144acd90a888578a08,
         type: 3}
@@ -3435,7 +3447,7 @@ PrefabInstance:
     - target: {fileID: 7238970272064264529, guid: d6fabd833efcb7144acd90a888578a08,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 171.81158
+      value: 207.61871
       objectReference: {fileID: 0}
     - target: {fileID: 7238970272064264529, guid: d6fabd833efcb7144acd90a888578a08,
         type: 3}

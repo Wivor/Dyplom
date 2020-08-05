@@ -14,8 +14,7 @@ public class ReplayUI : MonoBehaviour
     private void Start()
     {
         _replayManager = FindObjectOfType<ReplayManager>();
-        string[] fileArray = Directory.GetFiles("replays/").Select(Path.GetFileName).ToArray();
-        nameDropdown.AddOptions(fileArray.ToList());
+        OnEditorStart();
     }
 
     public void OnGameStart()
@@ -35,5 +34,12 @@ public class ReplayUI : MonoBehaviour
         _replayManager.LoadReplay(nameDropdown.captionText.text);
         FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         EventManager.ReplayStartTrigger();
+    }
+    
+    public void OnEditorStart()
+    {
+        nameDropdown.ClearOptions();
+        string[] fileArray = Directory.GetFiles("replays/").Select(Path.GetFileName).ToArray();
+        nameDropdown.AddOptions(fileArray.ToList());
     }
 }

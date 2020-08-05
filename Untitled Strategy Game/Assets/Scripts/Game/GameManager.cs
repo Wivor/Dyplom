@@ -13,9 +13,6 @@ public class GameManager : MonoBehaviour
     public int CharacterID = 0;
     public Action selectedAction;
 
-    public bool AIenabled = false;
-    public int AITurnNumber = 2;
-
     int turn = 1;
     bool ReplayPlaying = false;
 
@@ -60,12 +57,9 @@ public class GameManager : MonoBehaviour
 
         FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         FindObjectOfType<ActionPanel>().SetActions(Storage.characters[0]);
-
-        // #TODO infinite queue
-        if (AIenabled)
-        {
-            Storage.characters[Queue].GetComponent<Agent>().TakeAction();
-        }
+        
+        if (GetComponent<AIManager>().aiEnabled)
+            GetComponent<AIManager>().StartGame();
     }
 
     /*
@@ -82,7 +76,6 @@ public class GameManager : MonoBehaviour
         GameCanvas.enabled = true;
 
         ReplayPlaying = true;
-        AIenabled = false;
 
         Storage.characters.ForEach(character =>
         {
@@ -103,14 +96,17 @@ public class GameManager : MonoBehaviour
     {
         EditorCanvas.enabled = true;
         GameCanvas.enabled = false;
+        ActionsPanel.SetActive(true);
 
         ReplayPlaying = false;
         CharacterID = 0;
         Queue = 0;
+        turn = 1;
 
         Storage.ClearStorage();
         FindObjectOfType<Grid>().ClearGrid();
         EventManager.ClearEvents();
+        FindObjectOfType<ReplayUI>().OnEditorStart();
     }
 
     /*
@@ -122,7 +118,8 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         Queue++;
-        GetComponent<ReplayManager>().SaveReplay();
+        if (!ReplayPlaying)
+            GetComponent<ReplayManager>().SaveReplay();
 
         if (selectedAction != null)
         {
@@ -137,14 +134,14 @@ public class GameManager : MonoBehaviour
 
             Storage.characters.ForEach(character => character.Statistics.CurrentActionPoints = character.Statistics.ActionPoints);
         }
-
-        FindObjectOfType<ActionPanel>().SetActions(Storage.characters[Queue]);
+        if (!ReplayPlaying)
+            FindObjectOfType<ActionPanel>().SetActions(Storage.characters[Queue]);
         FindObjectOfType<TopCharacterPanel>().UpdateTopBar();
 
         //infinite queue
-        if (AIenabled)
+        if (GetComponent<AIManager>().aiEnabled && !ReplayPlaying)
         {
-            if(turn <= AITurnNumber)
+            if(turn <= GetComponent<AIManager>().AiTurnNumber)
             {
                 Storage.characters[Queue].GetComponent<Agent>().TakeAction();
             }
@@ -190,7 +187,7 @@ public class GameManager : MonoBehaviour
 
             if (character.Statistics.CurrentActionPoints == 0)
                 EndTurn();
-            else if (AIenabled)
+            else if (GetComponent<AIManager>().aiEnabled && !ReplayPlaying)
                 Storage.characters[Queue].GetComponent<Agent>().TakeAction();
         }
     }
