@@ -52,16 +52,14 @@ public class TopCharacterPanel : MonoBehaviour
     {
         foreach (Character character in startCharacters)
         {
-            Transform button = Instantiate(ButtonPrefab);
-            button.SetParent(transform);
-            button.GetComponent<TopBarButton>().Character = character;
+            Transform button = Instantiate(ButtonPrefab, transform, true);
+            button.GetComponent<TopBarButton>().character = character;
         }
     }
 
     private void AddSeparator()
     {
-        Transform button = Instantiate(Separator);
-        button.SetParent(transform);
+        Transform button = Instantiate(Separator, transform, true);
     }
 
     private void ClearBar()

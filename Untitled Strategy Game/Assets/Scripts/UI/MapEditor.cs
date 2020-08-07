@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class MapEditor : MonoBehaviour
 {
-    public GameObject SelectedImage;
-    public Character SelectedCharacter;
-    public Dropdown TeamDropdown;
-    public Grid Grid;
+    public GameObject selectedImage;
+    public Character selectedCharacter;
+    public Dropdown teamDropdown;
+    public Grid grid;
 
     /*
      * UI InputFields that are intended for grid dimensions.
@@ -21,7 +22,7 @@ public class MapEditor : MonoBehaviour
 
     public void GenerateGrid()
     {
-        Grid.GenerateGrid(int.Parse(width.textComponent.text), int.Parse(height.textComponent.text));
+        grid.GenerateGrid(int.Parse(width.textComponent.text), int.Parse(height.textComponent.text));
     }
 
     /*
@@ -30,6 +31,6 @@ public class MapEditor : MonoBehaviour
 
     public void ClearGrid()
     {
-        Grid.ClearGrid();
+        grid.ClearGrid();
     }
 }

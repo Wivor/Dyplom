@@ -13,7 +13,7 @@ public class MapData
         this.gridHeight = gridHeight;
         this.gridWidth= gridWidth;
 
-        characters = Storage.characters.ToDictionary(character => character.transform.parent.GetComponent<Hex>().id, character => character.Statistics);
+        characters = Storage.characters.ToDictionary(character => character.transform.parent.GetComponent<Hex>().id, character => character.statistics);
         obstacles = Storage.obstacles.Select(obstacle => obstacle.parent.GetComponent<Hex>().id).ToList();
     }
 }

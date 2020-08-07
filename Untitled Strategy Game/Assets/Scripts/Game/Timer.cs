@@ -1,38 +1,36 @@
 ﻿public class Timer
 {
-    float deltaTime;
-
-    float targetTime;
-    float duration;
+    private float _targetTime;
+    private readonly float _deltaTime;
+    private readonly float _duration;
+    private readonly OnTimerEnd _onEnd;
+    private readonly bool _repeat;
 
     public delegate void OnTimerEnd();
-    public OnTimerEnd onEnd;
-
-    public bool Repeat { get; set; }
 
     public Timer(float deltaTime, float duration, OnTimerEnd action)
     {
-        this.deltaTime = deltaTime;
-        this.duration = duration;
-        targetTime = duration;
-        onEnd = action;
-        Repeat = true;
+        this._deltaTime = deltaTime;
+        this._duration = duration;
+        _targetTime = duration;
+        _onEnd = action;
+        _repeat = true;
     }
 
     public void Update()
     {
-        targetTime -= deltaTime;
+        _targetTime -= _deltaTime;
 
-        if (targetTime <= 0.0f)
+        if (_targetTime <= 0.0f)
         {
-            timerEnded();
+            TimerEnded();
         }
     }
 
-    void timerEnded()
+    private void TimerEnded()
     {
-        onEnd.Invoke();
-        if (Repeat)
-            targetTime = duration;
+        _onEnd.Invoke();
+        if (_repeat)
+            _targetTime = _duration;
     }
 }

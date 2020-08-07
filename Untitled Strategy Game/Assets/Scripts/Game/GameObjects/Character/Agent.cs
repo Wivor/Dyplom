@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class Agent : MonoBehaviour
 {
-    private float[][] policy = new float[1][];
-    private GameManager gameManager;
+    private float[][] _policy = new float[1][];
+    private GameManager _gameManager;
 
     private void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
+        _gameManager = FindObjectOfType<GameManager>();
         SetType(1);
     }
 
@@ -24,31 +24,31 @@ public class Agent : MonoBehaviour
 
                 break;
             case 1:
-                policy[0] = new float[] { 1, 1, 1, 1, 1, 1, 1 };
+                _policy[0] = new float[] { 1, 1, 1, 1, 1, 1, 1 };
                 break;
             case 2:
-                policy[0] = new float[] { 0, 0, 0, 0, 0, 0, 1 };
+                _policy[0] = new float[] { 0, 0, 0, 0, 0, 0, 1 };
                 break;
         }
     }
 
     /*
-     * Takes the bigest value from policy table and checks if there is only one such nymber.
+     * Takes the biggest value from policy table and checks if there is only one such number.
      * If there is only one biggest number saves index of this number and takes action associated with that index.
-     * If there is more than one takes random action from all aviable.
+     * If there is more than one takes random action from all available.
      * 
      * #TODO in case of repititon of the biggest number it should only random from indexes of repeaters.
      */
 
     public void TakeAction()
     {
-        float max = policy[0].Max();
+        float max = _policy[0].Max();
         float index;
         int count = 0;
 
-        for (int i = 0; i < policy[0].Length; i++)
+        for (int i = 0; i < _policy[0].Length; i++)
         {
-            if (policy[0][i] == max)
+            if (_policy[0][i] == max)
             {
                 count++;
             }
@@ -56,16 +56,16 @@ public class Agent : MonoBehaviour
 
         if (count == 1)
         {
-            index = policy[0].ToList().IndexOf(max);
+            index = _policy[0].ToList().IndexOf(max);
         }
         else
         {
-            index = Random.Range(0, policy[0].Length);
+            index = Random.Range(0, _policy[0].Length);
         }
 
         //Debug.Log(index);
 
-        Node.Position position = Storage.characters[gameManager.Queue].transform.parent.GetComponent<Node>().position;
+        Node.Position position = Storage.characters[_gameManager.queue].transform.parent.GetComponent<Node>().position;
         bool even = position.y % 2 == 0;
 
         switch (index)
@@ -101,7 +101,7 @@ public class Agent : MonoBehaviour
                     Move(new Node.Position(position.x, position.y + 1));
                 break;
             case 6:
-                gameManager.TriggerAction(Storage.characters[gameManager.Queue].id, 2, Storage.GetHexByPosition(position).id);
+                _gameManager.TriggerAction(Storage.characters[_gameManager.queue].id, 2, Storage.GetHexByPosition(position).id);
                 break;
         }
     }
@@ -116,7 +116,7 @@ public class Agent : MonoBehaviour
     private void Move(Node.Position position)
     {
         if (Storage.GetHexByPosition(position) != null)
-            gameManager.TriggerAction(Storage.characters[gameManager.Queue].id, 0, Storage.GetHexByPosition(position).id);
+            _gameManager.TriggerAction(Storage.characters[_gameManager.queue].id, 0, Storage.GetHexByPosition(position).id);
         else
             TakeAction();
     }

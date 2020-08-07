@@ -8,7 +8,7 @@ public class ObjectImage : MonoBehaviour
 
     public void ChangeSelection()
     {
-        mapEditor.SelectedImage = obj;
-        mapEditor.SelectedCharacter = null;
+        mapEditor.selectedImage = obj;
+        mapEditor.selectedCharacter = null;
     }
 }

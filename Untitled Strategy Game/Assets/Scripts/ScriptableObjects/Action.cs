@@ -62,7 +62,7 @@ public abstract class Action : ScriptableObject
                 node.distance = 0;
                 foreach (Transform child in node.transform)
                 {
-                    if (child.tag == "RangeIndicator")
+                    if (child.CompareTag("RangeIndicator"))
                         Destroy(child.gameObject);
                 }
             }

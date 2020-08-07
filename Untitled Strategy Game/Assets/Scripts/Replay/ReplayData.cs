@@ -2,8 +2,8 @@
 
 public class ReplayData
 {
-    public MapData saveData;
-    public List<int[]> steps;
+    public readonly MapData saveData;
+    public readonly List<int[]> steps;
 
     public ReplayData(MapData saveData)
     {
@@ -11,9 +11,9 @@ public class ReplayData
         steps = new List<int[]>();
     }
 
-    public void AddStep(int characterID, int actionID, int hexID)
+    public void AddStep(int characterId, int actionId, int hexId)
     {
-        int[] arr = { characterID, actionID, hexID };
+        int[] arr = { characterId, actionId, hexId };
         steps.Add(arr);
     }
 }

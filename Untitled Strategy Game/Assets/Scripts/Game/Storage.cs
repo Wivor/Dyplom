@@ -13,17 +13,17 @@ public class Storage : MonoBehaviour
         return actions.Find(action => action.actionName.Contains(name));
     }
 
-    public static Character GetCharacterByID(int id)
+    public static Character GetCharacterById(int id)
     {
         return characters.Find(character => character.id == id);
     }
 
-    public Action GetActionByID(int id)
+    public Action GetActionById(int id)
     {
         return actions.Find(action => action.id == id);
     }
 
-    public static Hex GetHexByID(int id)
+    public static Hex GetHexById(int id)
     {
         return hexes.Find(hex => hex.id == id);
     }

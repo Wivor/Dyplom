@@ -6,7 +6,7 @@ public class Attack : Action
 {
     public override void Initialize(Character character)
     {
-        range = character.Statistics.Range;
+        range = character.statistics.Range;
     }
 
     /*
@@ -18,9 +18,8 @@ public class Attack : Action
         inRange = RangeFinder.FindNodesInRange(hex.GetComponent<Node>(), range);
         foreach (Node node in inRange)
         {
-            Transform indicator = Instantiate(hexPrefab) as Transform;
+            Transform indicator = Instantiate(hexPrefab, node.transform, true) as Transform;
             indicator.position = node.transform.position;
-            indicator.parent = node.transform;
             indicator.GetComponent<Renderer>().material = material;
         }
     }
@@ -39,7 +38,7 @@ public class Attack : Action
         if (hex.GetComponentInChildren<Character>() != null)
         {
             Debug.Log("ID " + character.id + " attacked: " + hex.GetComponent<Node>().position.ToString());
-            hex.GetComponentInChildren<Character>().DealDamage(character.Statistics.Attack);
+            hex.GetComponentInChildren<Character>().DealDamage(character.statistics.Attack);
             return true;
         }
         Debug.LogWarning("-> FAILURE! ID " + character.id + " attack: " + hex.GetComponent<Node>().position.ToString());

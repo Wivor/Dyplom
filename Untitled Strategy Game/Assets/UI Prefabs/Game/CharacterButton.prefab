@@ -63,6 +63,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -142,7 +143,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcde9a7bee6d2b840b73873d8dde4d31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Character: {fileID: 0}
+  character: {fileID: 818894937307859390, guid: 67ffc9dc6a7d4a049a9cd01827e19412,
+    type: 3}
 --- !u!1001 &7337810266841150331
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -150,11 +152,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6066151333154278340}
     m_Modifications:
-    - target: {fileID: 8027554150485055732, guid: 4bb9098c3c6a1a24c9a2f37b8adfd576,
-        type: 3}
-      propertyPath: m_Name
-      value: Text
-      objectReference: {fileID: 0}
     - target: {fileID: 2679913341082860651, guid: 4bb9098c3c6a1a24c9a2f37b8adfd576,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -259,6 +256,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8027554150485055732, guid: 4bb9098c3c6a1a24c9a2f37b8adfd576,
+        type: 3}
+      propertyPath: m_Name
+      value: Text
       objectReference: {fileID: 0}
     - target: {fileID: 8788921866891480879, guid: 4bb9098c3c6a1a24c9a2f37b8adfd576,
         type: 3}

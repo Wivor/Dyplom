@@ -1,78 +1,79 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class EditorStatistics : MonoBehaviour
 {
-    public InputField NameText;
-    public InputField HeathText;
-    public InputField AttackText;
-    public InputField InitiativeText;
-    public InputField RangeText;
-    public InputField MovementText;
+    public InputField nameText;
+    public InputField heathText;
+    public InputField attackText;
+    public InputField initiativeText;
+    public InputField rangeText;
+    public InputField movementText;
 
     public void SetCharacter(Character character)
     {
-        NameText.text = character.Statistics.Name.ToString();
-        HeathText.text = character.Statistics.MaxHealth.ToString();
-        AttackText.interactable = true;
-        AttackText.text = character.Statistics.Attack.ToString();
-        InitiativeText.interactable = true;
-        InitiativeText.text = character.Statistics.Initiative.ToString();
-        RangeText.interactable = true;
-        RangeText.text = character.Statistics.Range.ToString();
-        MovementText.interactable = true;
-        MovementText.text = character.Statistics.Movement.ToString();
+        nameText.text = character.statistics.Name.ToString();
+        heathText.text = character.statistics.MaxHealth.ToString();
+        attackText.interactable = true;
+        attackText.text = character.statistics.Attack.ToString();
+        initiativeText.interactable = true;
+        initiativeText.text = character.statistics.Initiative.ToString();
+        rangeText.interactable = true;
+        rangeText.text = character.statistics.Range.ToString();
+        movementText.interactable = true;
+        movementText.text = character.statistics.Movement.ToString();
     }
 
     public void SetObstacle(Obstacle obstacle)
     {
-        NameText.text = "-";
-        HeathText.text = "-";
-        AttackText.interactable = false;
-        AttackText.text = "-";
-        InitiativeText.interactable = false;
-        InitiativeText.text = "-";
-        RangeText.interactable = false;
-        RangeText.text = "-";
-        MovementText.interactable = false;
-        MovementText.text = "-";
+        nameText.text = "-";
+        heathText.text = "-";
+        attackText.interactable = false;
+        attackText.text = "-";
+        initiativeText.interactable = false;
+        initiativeText.text = "-";
+        rangeText.interactable = false;
+        rangeText.text = "-";
+        movementText.interactable = false;
+        movementText.text = "-";
     }
 
     public void UpdateCharacterName()
     {
-        FindObjectOfType<MapEditor>().SelectedCharacter.Statistics.Name = NameText.text;
+        FindObjectOfType<MapEditor>().selectedCharacter.statistics.Name = nameText.text;
     }
 
     public void UpdateCharacterHealth()
     {
-        FindObjectOfType<MapEditor>().SelectedCharacter.Statistics.MaxHealth = int.Parse(HeathText.text);
+        FindObjectOfType<MapEditor>().selectedCharacter.statistics.MaxHealth = int.Parse(heathText.text);
     }
 
     public void UpdateCharacterAttack()
     {
-        GameElement element = FindObjectOfType<MapEditor>().SelectedCharacter;
+        GameElement element = FindObjectOfType<MapEditor>().selectedCharacter;
         if (element is Character)
-            (element as Character).Statistics.Attack = int.Parse(AttackText.text);
+            (element as Character).statistics.Attack = int.Parse(attackText.text);
     }
 
     public void UpdateCharacterInitiative()
     {
-        GameElement element = FindObjectOfType<MapEditor>().SelectedCharacter;
+        GameElement element = FindObjectOfType<MapEditor>().selectedCharacter;
         if (element is Character)
-            (element as Character).Statistics.Initiative = int.Parse(InitiativeText.text);
+            (element as Character).statistics.Initiative = int.Parse(initiativeText.text);
     }
 
     public void UpdateCharacterRange()
     {
-        GameElement element = FindObjectOfType<MapEditor>().SelectedCharacter;
+        GameElement element = FindObjectOfType<MapEditor>().selectedCharacter;
         if (element is Character)
-            (element as Character).Statistics.Range = int.Parse(RangeText.text);
+            (element as Character).statistics.Range = int.Parse(rangeText.text);
     }
 
     public void UpdateCharacterMovement()
     {
-        GameElement element = FindObjectOfType<MapEditor>().SelectedCharacter;
+        GameElement element = FindObjectOfType<MapEditor>().selectedCharacter;
         if (element is Character)
-            (element as Character).Statistics.Movement = int.Parse(MovementText.text);
+            (element as Character).statistics.Movement = int.Parse(movementText.text);
     }
 }

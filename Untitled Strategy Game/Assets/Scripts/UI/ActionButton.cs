@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ActionButton : MonoBehaviour
 {
-    public Action Action;
+    public Action action;
 
     void Start()
     {
-        GetComponentInChildren<Text>().text = Action.actionName.ToString();
-        GetComponent<Image>().sprite = Action.artwork;
+        GetComponentInChildren<Text>().text = action.actionName.ToString();
+        GetComponent<Image>().sprite = action.artwork;
     }
 
     public void OnClick()
     {
-        FindObjectOfType<GameManager>().OnActionPress(Action);
-        Character character = Storage.characters[FindObjectOfType<GameManager>().Queue];
-        Action.OnSelect(character, character.transform.parent.GetComponent<Hex>());
+        FindObjectOfType<GameManager>().OnActionPress(action);
+        Character character = Storage.characters[FindObjectOfType<GameManager>().queue];
+        action.OnSelect(character, character.transform.parent.GetComponent<Hex>());
     }
 }

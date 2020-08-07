@@ -62,27 +62,25 @@ public class SaveMapManager : MonoBehaviour
         }
     }
 
-    private void LoadObstacle(int hexID)
+    private void LoadObstacle(int hexId)
     {
-        GameObject obstacle = Instantiate(obstaclePrefab);
-        Hex hex = Storage.GetHexByID(hexID);
+        Hex hex = Storage.GetHexById(hexId);
+        GameObject obstacle = Instantiate(obstaclePrefab, hex.transform, true);
         obstacle.transform.position = hex.transform.position + new Vector3(0, 2, 0);
-        obstacle.transform.parent = hex.transform;
         Storage.obstacles.Add(obstacle.transform);
     }
 
-    private void LoadCharacter(int hexID, Statistics stats)
+    private void LoadCharacter(int hexId, Statistics stats)
     {
-        GameObject character = Instantiate(characterPrefab);
-        Hex hex = Storage.GetHexByID(hexID);
+        Hex hex = Storage.GetHexById(hexId);
+        GameObject character = Instantiate(characterPrefab, hex.transform, true);
         character.transform.position = hex.transform.position + new Vector3(0, 2, 0);
-        character.transform.parent = hex.transform;
-        character.GetComponent<Character>().Statistics = stats;
+        character.GetComponent<Character>().statistics = stats;
         FindObjectOfType<GameManager>().AddNewCharacter(character.GetComponent<Character>());
 
         if (stats.Team == "Team A")
-            character.GetComponent<Renderer>().material = hex.TeamAmat;
+            character.GetComponent<Renderer>().material = hex.teamAmat;
         else
-            character.GetComponent<Renderer>().material = hex.TeamBmat;
+            character.GetComponent<Renderer>().material = hex.teamBmat;
     }
 }

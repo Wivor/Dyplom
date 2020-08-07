@@ -3,18 +3,18 @@
 public class Grid : MonoBehaviour
 {
     public Transform hexPrefab;
-    int id = 0;
+    private int _id = 0;
 
     public int GridWidth { get; private set; }
     public int GridHeight { get; private set; }
 
-    float hexWidth = 1.732f;
-    float hexHeight = 2.0f;
-    float gap = 0.1f;
+    private float _hexWidth = 1.732f;
+    private float _hexHeight = 2.0f;
+    private const float Gap = 0.1f;
 
-    Vector3 startPos;
+    private Vector3 _startPos;
 
-    Grid()
+    private Grid()
     {
         AddGap();
     }
@@ -34,7 +34,7 @@ public class Grid : MonoBehaviour
 
     public void ClearGrid()
     {
-        id = 0;
+        _id = 0;
         Storage.ClearStorage();
         foreach (Transform child in transform)
             Destroy(child.gameObject);
@@ -42,50 +42,49 @@ public class Grid : MonoBehaviour
 
     void AddGap()
     {
-        hexWidth += hexWidth * gap;
-        hexHeight += hexHeight * gap;
+        _hexWidth += _hexWidth * Gap;
+        _hexHeight += _hexHeight * Gap;
     }
 
     void CalcStartPos()
     {
         float offset = 0;
         if (GridHeight / 2 % 2 != 0)
-            offset = hexWidth / 2;
+            offset = _hexWidth / 2;
 
-        float x = -hexWidth * (GridWidth / 2) - offset;
-        float z = hexHeight * 0.75f * (GridHeight / 2);
+        float x = -_hexWidth * (GridWidth / 2) - offset;
+        float z = _hexHeight * 0.75f * (GridHeight / 2);
 
-        startPos = new Vector3(x, 0, z);
+        _startPos = new Vector3(x, 0, z);
     }
 
     Vector3 CalcWorldPos(Vector2 gridPos)
     {
         float offset = 0;
         if (gridPos.y % 2 != 0)
-            offset = hexWidth / 2;
+            offset = _hexWidth / 2;
 
-        float x = startPos.x + gridPos.x * hexWidth + offset;
-        float z = startPos.z - gridPos.y * hexHeight * 0.75f;
+        float x = _startPos.x + gridPos.x * _hexWidth + offset;
+        float z = _startPos.z - gridPos.y * _hexHeight * 0.75f;
 
         return new Vector3(x, 0, z);
     }
 
-    void CreateGrid()
+    private void CreateGrid()
     {
         for (int y = 0; y < GridHeight; y++)
         {
             for (int x = 0; x < GridWidth; x++)
             {
-                Transform hex = Instantiate(hexPrefab) as Transform;
+                Transform hex = Instantiate(hexPrefab, transform, true);
                 Vector2 gridPos = new Vector2(x, y);
                 hex.position = CalcWorldPos(gridPos);
-                hex.parent = transform;
                 hex.name = "Hex " + x + "x" + y;
-                hex.GetComponent<Hex>().id = id;
+                hex.GetComponent<Hex>().id = _id;
                 hex.GetComponent<Node>().position = new Node.Position(x, y);
 
                 Storage.hexes.Add(hex.GetComponent<Hex>());
-                id++;
+                _id++;
             }
         }
     }

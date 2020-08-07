@@ -3159,12 +3159,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4ad78903c6ee3740830a710fe0a67d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EditorCanvas: {fileID: 680719674}
-  GameCanvas: {fileID: 737700713}
-  ActionsPanel: {fileID: 130783355}
-  ReplayCanvas: {fileID: 0}
-  Queue: 0
-  CharacterID: 0
+  editorCanvas: {fileID: 680719674}
+  gameCanvas: {fileID: 737700713}
+  actionsPanel: {fileID: 130783355}
+  replayCanvas: {fileID: 0}
+  queue: 0
+  characterId: 0
   selectedAction: {fileID: 0}
 --- !u!4 &527927857
 Transform:

@@ -6,17 +6,17 @@
 
 public abstract class GameElement : MonoBehaviour
 {
-    protected GameManager GameManager;
-    protected EditorStatistics EditorStatistics;
-    protected GameStatistics GameStatistics;
-    protected MapEditor mapEditor;
+    private GameManager _gameManager;
+    private EditorStatistics _editorStatistics;
+    private GameStatistics _gameStatistics;
+    private MapEditor _mapEditor;
 
     void Start()
     {
-        GameManager = FindObjectOfType<GameManager>();
-        EditorStatistics = FindObjectOfType<EditorStatistics>();
-        GameStatistics = FindObjectOfType<GameStatistics>();
-        mapEditor = FindObjectOfType<MapEditor>();
+        _gameManager = FindObjectOfType<GameManager>();
+        _editorStatistics = FindObjectOfType<EditorStatistics>();
+        _gameStatistics = FindObjectOfType<GameStatistics>();
+        _mapEditor = FindObjectOfType<MapEditor>();
         Init();
     }
 

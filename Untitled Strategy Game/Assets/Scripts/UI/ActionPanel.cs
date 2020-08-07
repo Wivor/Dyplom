@@ -1,9 +1,10 @@
 ﻿
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ActionPanel : MonoBehaviour
 {
-    public Transform ButtonPrefab;
+    public Transform buttonPrefab;
 
     public void SetActions(Character character)
     {
@@ -21,9 +22,8 @@ public class ActionPanel : MonoBehaviour
     {
         foreach (Action action in character.actions)
         {
-            Transform button = Instantiate(ButtonPrefab);
-            button.SetParent(transform);
-            button.GetComponent<ActionButton>().Action = action;
+            Transform button = Instantiate(buttonPrefab, transform, true);
+            button.GetComponent<ActionButton>().action = action;
         }
     }
 }

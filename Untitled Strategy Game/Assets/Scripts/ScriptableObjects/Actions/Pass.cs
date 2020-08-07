@@ -8,15 +8,15 @@ public class Pass : Action
 
     }
 
-    public override void OnSelect(Character character, Hex hex = null)
+    public override void OnSelect(Character character, Hex hex)
     {
         FindObjectOfType<GameManager>().TriggerAction(character.id, id, 0);
     }
 
-    public override bool Use(Character character, Hex hex = null)
+    public override bool Use(Character character, Hex hex)
     {
         Debug.Log("ID " + character.id + " passed the turn.");
-        character.Statistics.CurrentActionPoints = 0;
+        character.statistics.CurrentActionPoints = 0;
         return true;
     }
 }

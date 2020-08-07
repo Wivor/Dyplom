@@ -17,9 +17,8 @@ public class Move : Action
         inRange = MoveFinder.FindNodesInRange(hex.GetComponent<Node>(), range);
         foreach (Node node in inRange)
         {
-            Transform indicator = Instantiate(hexPrefab) as Transform;
+            Transform indicator = Instantiate(hexPrefab, node.transform, true) as Transform;
             indicator.position = node.transform.position;
-            indicator.parent = node.transform;
             indicator.GetComponent<Renderer>().material = material;
         }
     }

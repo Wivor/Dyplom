@@ -4,17 +4,17 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-    public Canvas EditorCanvas;
-    public Canvas GameCanvas;
-    public GameObject ActionsPanel;
-    public Canvas ReplayCanvas;
+    public Canvas editorCanvas;
+    public Canvas gameCanvas;
+    public GameObject actionsPanel;
+    public Canvas replayCanvas;
 
-    public int Queue;
-    public int CharacterID = 0;
+    public int queue;
+    public int characterId = 0;
     public Action selectedAction;
 
-    int turn = 1;
-    bool ReplayPlaying = false;
+    private int _turn = 1;
+    private bool _replayPlaying = false;
 
     /*
      * Enables editor canvas and sets turn to 1.
@@ -24,8 +24,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        GameCanvas.enabled = false;
-        EditorCanvas.enabled = true;
+        gameCanvas.enabled = false;
+        editorCanvas.enabled = true;
 
         FindObjectOfType<TurnChanger>().TurnText.text = "Turn 1";
 
@@ -41,14 +41,14 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        EditorCanvas.enabled = false;
-        GameCanvas.enabled = true;
+        editorCanvas.enabled = false;
+        gameCanvas.enabled = true;
 
         EventManager.GameStartTrigger();
 
         Storage.characters.ForEach(character => 
         {
-            character.Statistics.Initiative += Random.Range(-10, 10);
+            character.statistics.Initiative += Random.Range(-10, 10);
             character.InitializeActions();
         });
 
@@ -72,10 +72,10 @@ public class GameManager : MonoBehaviour
 
     public void StartReplay()
     {
-        EditorCanvas.enabled = false;
-        GameCanvas.enabled = true;
+        editorCanvas.enabled = false;
+        gameCanvas.enabled = true;
 
-        ReplayPlaying = true;
+        _replayPlaying = true;
 
         Storage.characters.ForEach(character =>
         {
@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         SortCharactersByInitiative(ref Storage.characters);
         AddQueueNumberTo(Storage.characters);
         
-        ActionsPanel.SetActive(false);
+        actionsPanel.SetActive(false);
     }
 
     /*
@@ -94,14 +94,14 @@ public class GameManager : MonoBehaviour
 
     public void StartEditor()
     {
-        EditorCanvas.enabled = true;
-        GameCanvas.enabled = false;
-        ActionsPanel.SetActive(true);
+        editorCanvas.enabled = true;
+        gameCanvas.enabled = false;
+        actionsPanel.SetActive(true);
 
-        ReplayPlaying = false;
-        CharacterID = 0;
-        Queue = 0;
-        turn = 1;
+        _replayPlaying = false;
+        characterId = 0;
+        queue = 0;
+        _turn = 1;
 
         Storage.ClearStorage();
         FindObjectOfType<Grid>().ClearGrid();
@@ -117,8 +117,8 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
-        Queue++;
-        if (!ReplayPlaying)
+        queue++;
+        if (!_replayPlaying)
             GetComponent<ReplayManager>().SaveReplay();
 
         if (selectedAction != null)
@@ -126,24 +126,24 @@ public class GameManager : MonoBehaviour
             selectedAction.OnDeselect();
         }
         
-        if (Queue == Storage.characters.Count)
+        if (queue == Storage.characters.Count)
         {
-            Queue = 0;
-            turn++;
-            FindObjectOfType<TurnChanger>().TurnText.text = "Turn " + turn;
+            queue = 0;
+            _turn++;
+            FindObjectOfType<TurnChanger>().TurnText.text = "Turn " + _turn;
 
-            Storage.characters.ForEach(character => character.Statistics.CurrentActionPoints = character.Statistics.ActionPoints);
+            Storage.characters.ForEach(character => character.statistics.CurrentActionPoints = character.statistics.ActionPoints);
         }
-        if (!ReplayPlaying)
-            FindObjectOfType<ActionPanel>().SetActions(Storage.characters[Queue]);
+        if (!_replayPlaying)
+            FindObjectOfType<ActionPanel>().SetActions(Storage.characters[queue]);
         FindObjectOfType<TopCharacterPanel>().UpdateTopBar();
 
         //infinite queue
-        if (GetComponent<AIManager>().aiEnabled && !ReplayPlaying)
+        if (GetComponent<AIManager>().aiEnabled && !_replayPlaying)
         {
-            if(turn <= GetComponent<AIManager>().AiTurnNumber)
+            if(_turn <= GetComponent<AIManager>().AiTurnNumber)
             {
-                Storage.characters[Queue].GetComponent<Agent>().TakeAction();
+                Storage.characters[queue].GetComponent<Agent>().TakeAction();
             }
         }
     }
@@ -170,25 +170,25 @@ public class GameManager : MonoBehaviour
      * @hexID           id of targeted hex
      */
 
-    public void TriggerAction(int characterID, int actionID, int hexID)
+    public void TriggerAction(int characterId, int actionID, int hexID)
     {
-        Character character = Storage.GetCharacterByID(characterID);
-        Action action = FindObjectOfType<Storage>().GetActionByID(actionID);
-        Hex hex = Storage.GetHexByID(hexID);
+        Character character = Storage.GetCharacterById(characterId);
+        Action action = FindObjectOfType<Storage>().GetActionById(actionID);
+        Hex hex = Storage.GetHexById(hexID);
 
-        if (character.GetActionByID(actionID).Use(character, hex))
+        if (character.GetActionById(actionID).Use(character, hex))
         {
-            if (!ReplayPlaying)
+            if (!_replayPlaying)
             {
-                GetComponent<ReplayManager>().AddStep(characterID, actionID, hexID);
+                GetComponent<ReplayManager>().AddStep(characterId, actionID, hexID);
             }
-            character.Statistics.CurrentActionPoints -= action.cost;
-            character.GetActionByID(actionID).OnDeselect();
+            character.statistics.CurrentActionPoints -= action.cost;
+            character.GetActionById(actionID).OnDeselect();
 
-            if (character.Statistics.CurrentActionPoints == 0)
+            if (character.statistics.CurrentActionPoints == 0)
                 EndTurn();
-            else if (GetComponent<AIManager>().aiEnabled && !ReplayPlaying)
-                Storage.characters[Queue].GetComponent<Agent>().TakeAction();
+            else if (GetComponent<AIManager>().aiEnabled && !_replayPlaying)
+                Storage.characters[queue].GetComponent<Agent>().TakeAction();
         }
     }
 
@@ -214,10 +214,10 @@ public class GameManager : MonoBehaviour
 
     public void AddNewCharacter(Character character)
     {
-        character.id = CharacterID;
-        character.Statistics.Name = CharacterID.ToString();
+        character.id = characterId;
+        character.statistics.Name = characterId.ToString();
         Storage.characters.Add(character);
-        CharacterID++;
+        characterId++;
     }
 
     /*
@@ -229,7 +229,7 @@ public class GameManager : MonoBehaviour
         int i = 0;
         foreach (Character character in characters)
         {
-            character.Queue = i;
+            character.queue = i;
             i++;
         }
     }
@@ -244,7 +244,7 @@ public class GameManager : MonoBehaviour
 
     private void SortCharactersByInitiative(ref List<Character> characters)
     {
-        characters = characters.OrderBy(character => character.Statistics.Initiative).ToList();
+        characters = characters.OrderBy(character => character.statistics.Initiative).ToList();
         characters.Reverse();
     }
 

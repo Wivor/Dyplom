@@ -23,8 +23,8 @@ public class ClickableInEditor : MonoBehaviour
         Character character = GetComponent<Character>();
         MapEditor mapEditor = FindObjectOfType<MapEditor>();
 
-        mapEditor.SelectedCharacter = character;
-        mapEditor.SelectedImage = null;
+        mapEditor.selectedCharacter = character;
+        mapEditor.selectedImage = null;
         FindObjectOfType<EditorStatistics>().SetCharacter(character);
     }
 
@@ -32,25 +32,24 @@ public class ClickableInEditor : MonoBehaviour
     {
         Hex hex = GetComponent<Hex>();
         MapEditor mapEditor = FindObjectOfType<MapEditor>();
-        if (mapEditor.SelectedImage != null && !hex.IsOccupied())
+        if (mapEditor.selectedImage != null && !hex.IsOccupied())
         {
-            GameObject obj = Instantiate(mapEditor.SelectedImage);
+            GameObject obj = Instantiate(mapEditor.selectedImage, transform, true);
             obj.transform.position = transform.position + new Vector3(0, 2, 0);
-            obj.transform.parent = transform;
             if (obj.GetComponent<Character>() != null)
             {
-                obj.GetComponent<Character>().Statistics.Team = mapEditor.TeamDropdown.captionText.text;
+                obj.GetComponent<Character>().statistics.Team = mapEditor.teamDropdown.captionText.text;
                 FindObjectOfType<GameManager>().AddNewCharacter(obj.GetComponent<Character>());
 
-                if (mapEditor.TeamDropdown.captionText.text == "Team A")
+                if (mapEditor.teamDropdown.captionText.text == "Team A")
                 {
-                    obj.GetComponent<Renderer>().material = hex.TeamAmat;
-                    obj.GetComponent<Character>().TeamID = 0;
+                    obj.GetComponent<Renderer>().material = hex.teamAmat;
+                    obj.GetComponent<Character>().teamId = 0;
                 }
                 else
                 {
-                    obj.GetComponent<Renderer>().material = hex.TeamBmat;
-                    obj.GetComponent<Character>().TeamID = 1;
+                    obj.GetComponent<Renderer>().material = hex.teamBmat;
+                    obj.GetComponent<Character>().teamId = 1;
                 }
             }
             if(obj.GetComponent<Obstacle>() != null)
@@ -58,9 +57,9 @@ public class ClickableInEditor : MonoBehaviour
                 Storage.obstacles.Add(obj.transform);
             }
         }
-        else if (mapEditor.SelectedCharacter != null && !hex.IsOccupied())
+        else if (mapEditor.selectedCharacter != null && !hex.IsOccupied())
         {
-            mapEditor.SelectedCharacter.transform.SetParent(transform, false);
+            mapEditor.selectedCharacter.transform.SetParent(transform, false);
         }
     }
 }

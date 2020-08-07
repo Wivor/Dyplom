@@ -5,10 +5,10 @@ public class CameraController : MonoBehaviour
     public float speed = 5.0f;
     public float sensitivity = 10f;
 
-    float minFov = 15f;
-    float maxFov = 90f;
+    private const float MinFov = 15f;
+    private const float MaxFov = 90f;
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKey(KeyCode.D))
         {
@@ -29,7 +29,7 @@ public class CameraController : MonoBehaviour
 
         float fov = Camera.main.fieldOfView;
         fov -= Input.GetAxis("Mouse ScrollWheel") * sensitivity;
-        fov = Mathf.Clamp(fov, minFov, maxFov);
+        fov = Mathf.Clamp(fov, MinFov, MaxFov);
         Camera.main.fieldOfView = fov;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 /*
  * Class for moveable characters for players.
@@ -6,12 +7,12 @@
 
 public class Character : GameElement
 {
-    public int TeamID;
-    public int Queue;
+    public int teamId;
+    public int queue;
 
     public List<Action> actions = new List<Action>();
 
-    public Statistics Statistics = new Statistics();
+    public Statistics statistics = new Statistics();
 
     public int id;
 
@@ -23,14 +24,7 @@ public class Character : GameElement
 
     protected override void Init()
     {
-        if (TeamID == 0)
-        {
-            GetComponent<Agent>().SetType(1);
-        }
-        else
-        {
-            GetComponent<Agent>().SetType(2);
-        }
+        GetComponent<Agent>().SetType(teamId == 0 ? 1 : 2);
 
         Action move = FindObjectOfType<Storage>().GetActionByName("Move");
         actions.Add(move);
@@ -62,7 +56,7 @@ public class Character : GameElement
      * @return Action   Action with the given id
      */
 
-    public Action GetActionByID(int id)
+    public Action GetActionById(int id)
     {
         return actions.Find(action => action.id == id);
     }
@@ -76,8 +70,8 @@ public class Character : GameElement
 
     public void DealDamage(int dmg)
     {
-        Statistics.CurrentHealth -= dmg;
-        if (Statistics.CurrentHealth <= 0)
+        statistics.CurrentHealth -= dmg;
+        if (statistics.CurrentHealth <= 0)
         {
             FindObjectOfType<GameManager>().DestroyCharacter(this);
             Destroy(gameObject);
@@ -88,18 +82,18 @@ public class Character : GameElement
      * Adds events that are called on start of the game or replay.
      */
 
-    void OnEnable()
+    private void OnEnable()
     {
         EventManager.OnGameStart += OnGameStart;
         EventManager.OnReplayStart += OnReplayStart;
     }
 
-    public void OnGameStart()
+    private void OnGameStart()
     {
         gameObject.AddComponent<ClickableInGame>();
     }
 
-    public void OnReplayStart()
+    private void OnReplayStart()
     {
         gameObject.AddComponent<ClickableInReplay>();
     }

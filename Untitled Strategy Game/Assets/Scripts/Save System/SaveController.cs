@@ -12,8 +12,8 @@ public class SaveController : MonoBehaviour
     private void Start()
     {
         DirectoryInfo d = new DirectoryInfo("saves/");
-        FileInfo[] Files = d.GetFiles("*");
-        dropdown.AddOptions(Files.Select(file => { return file.Name; }).ToList());
+        FileInfo[] files = d.GetFiles("*");
+        dropdown.AddOptions(files.Select(file => file.Name).ToList());
     }
 
     public void SaveMap()

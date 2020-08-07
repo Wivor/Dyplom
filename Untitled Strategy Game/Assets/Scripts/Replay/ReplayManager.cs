@@ -9,23 +9,24 @@ public class ReplayManager : MonoBehaviour
     public GameObject characterPrefab;
     public GameObject obstaclePrefab;
 
-    int i = 0;
+    private int _i = 0;
     private Grid _grid;
     private string _replayName;
     private ReplayData _replayData;
     private JsonSerializer _serializer;
+    private GameManager _gameManager;
     private Timer _timer;
 
     private void Start()
     {
+        _gameManager = GetComponent<GameManager>();
         _grid = FindObjectOfType<Grid>();
         _serializer = new JsonSerializer();
     }
 
     private void Update()
     {
-        if (_timer != null)
-            _timer.Update();
+        _timer?.Update();
     }
 
     public void CreateReplayData(string replayName, MapData mapData)
@@ -34,9 +35,9 @@ public class ReplayManager : MonoBehaviour
         _replayData = new ReplayData(mapData);
     }
 
-    public void AddStep(int characterID, int actionID, int hexID)
+    public void AddStep(int characterId, int actionId, int hexId)
     {
-        _replayData?.AddStep(characterID, actionID, hexID);
+        _replayData?.AddStep(characterId, actionId, hexId);
     }
 
     public void SaveReplay()
@@ -71,25 +72,25 @@ public class ReplayManager : MonoBehaviour
             LoadCharacter(entry.Key, entry.Value);
         }
 
-        foreach (int hexID in _replayData.saveData.obstacles)
+        foreach (int hexId in _replayData.saveData.obstacles)
         {
-            LoadObstacle(hexID);
+            LoadObstacle(hexId);
         }
 
         PlayReplay();
     }
 
-    public void PlayReplay()
+    private void PlayReplay()
     {
         _timer = new Timer(Time.deltaTime, 1, DoNextAction);
     }
 
-    public void DoNextAction()
-    {
-        if (i < _replayData.steps.Count)
+    private void DoNextAction()
+    { 
+        if (_i < _replayData.steps.Count)
         {
-            GetComponent<GameManager>().TriggerAction(_replayData.steps[i][0], _replayData.steps[i][1], _replayData.steps[i][2]);
-            i++;
+            _gameManager.TriggerAction(_replayData.steps[_i][0], _replayData.steps[_i][1], _replayData.steps[_i][2]);
+            _i++;
         }
         else
         {
@@ -97,28 +98,26 @@ public class ReplayManager : MonoBehaviour
         }
     }
 
-    private void LoadObstacle(int hexID)
+    private void LoadObstacle(int hexId)
     {
-        GameObject obstacle = Instantiate(obstaclePrefab);
-        Hex hex = Storage.GetHexByID(hexID);
+        Hex hex = Storage.GetHexById(hexId);
+        GameObject obstacle = Instantiate(obstaclePrefab, hex.transform, true);
         obstacle.transform.position = hex.transform.position + new Vector3(0, 2, 0);
-        obstacle.transform.parent = hex.transform;
         Storage.obstacles.Add(obstacle.transform);
     }
 
-    private void LoadCharacter(int hexID, Statistics stats)
+    private void LoadCharacter(int hexId, Statistics stats)
     {
-        GameObject character = Instantiate(characterPrefab);
-        Hex hex = Storage.GetHexByID(hexID);
+        Hex hex = Storage.GetHexById(hexId);
+        GameObject character = Instantiate(characterPrefab, hex.transform, true);
         character.transform.position = hex.transform.position + new Vector3(0, 2, 0);
-        character.transform.parent = hex.transform;
-        character.GetComponent<Character>().Statistics = stats;
+        character.GetComponent<Character>().statistics = stats;
         FindObjectOfType<GameManager>().AddNewCharacter(character.GetComponent<Character>());
 
         if (stats.Team == "Team A")
-            character.GetComponent<Renderer>().material = hex.TeamAmat;
+            character.GetComponent<Renderer>().material = hex.teamAmat;
         else
-            character.GetComponent<Renderer>().material = hex.TeamBmat;
+            character.GetComponent<Renderer>().material = hex.teamBmat;
     }
 
     public void ClearReplay()

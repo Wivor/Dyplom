@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 /*
  * Class for every hexagonal tile on map.
@@ -6,8 +7,8 @@
 
 public class Hex : MonoBehaviour
 {
-    public Material TeamAmat;
-    public Material TeamBmat;
+    public Material teamAmat;
+    public Material teamBmat;
 
     public int id;
     public GameManager gameManager;

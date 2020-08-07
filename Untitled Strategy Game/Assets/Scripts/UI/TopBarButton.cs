@@ -1,17 +1,18 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class TopBarButton : MonoBehaviour
 {
-    public Character Character;
+    public Character character;
 
     void Start()
     {
-        GetComponentInChildren<Text>().text = Character.Statistics.Name.ToString();
+        GetComponentInChildren<Text>().text = character.statistics.Name.ToString();
     }
 
     public void OnClick()
     {
-        FindObjectOfType<GameStatistics>().SetCharacter(Character);
+        FindObjectOfType<GameStatistics>().SetCharacter(character);
     }
 }

@@ -1,35 +1,36 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameStatistics : MonoBehaviour
 {
-    public Text NameText;
-    public Text HeathText;
-    public Text AttackText;
-    public Text InitiativeText;
-    public Text RangeText;
-    public Text MovementText;
-    public Text ActionPointsText;
+    public Text nameText;
+    public Text heathText;
+    public Text attackText;
+    public Text initiativeText;
+    public Text rangeText;
+    public Text movementText;
+    public Text actionPointsText;
 
     public void SetCharacter(Character character)
     {
-        NameText.text = character.Statistics.Name.ToString();
-        HeathText.text = character.Statistics.CurrentHealth.ToString() + " / " + character.Statistics.MaxHealth.ToString();
-        AttackText.text = character.Statistics.Attack.ToString();
-        InitiativeText.text = character.Statistics.Initiative.ToString();
-        RangeText.text = character.Statistics.Range.ToString();
-        MovementText.text = character.Statistics.Movement.ToString();
-        ActionPointsText.text = character.Statistics.CurrentActionPoints.ToString();
+        nameText.text = character.statistics.Name.ToString();
+        heathText.text = character.statistics.CurrentHealth.ToString() + " / " + character.statistics.MaxHealth.ToString();
+        attackText.text = character.statistics.Attack.ToString();
+        initiativeText.text = character.statistics.Initiative.ToString();
+        rangeText.text = character.statistics.Range.ToString();
+        movementText.text = character.statistics.Movement.ToString();
+        actionPointsText.text = character.statistics.CurrentActionPoints.ToString();
     }
 
     public void SetObstacle(Obstacle obstacle)
     {
-        NameText.text = "-";
-        HeathText.text = "-";
-        AttackText.text = "-";
-        InitiativeText.text = "-";
-        RangeText.text = "-";
-        MovementText.text = "-";
-        ActionPointsText.text = "-";
+        nameText.text = "-";
+        heathText.text = "-";
+        attackText.text = "-";
+        initiativeText.text = "-";
+        rangeText.text = "-";
+        movementText.text = "-";
+        actionPointsText.text = "-";
     }
 }

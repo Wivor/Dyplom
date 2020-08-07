@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 /*
@@ -7,12 +8,12 @@ using UnityEngine.UI;
 
 public class HexText : MonoBehaviour
 {
-    public Text IDText;
-    public Text PositionText;
+    public Text idText;
+    public Text positionText;
 
-    void Start()
+    private void Start()
     {
-        IDText.text = GetComponent<Hex>().id.ToString();
-        PositionText.text = GetComponent<Node>().position.ToString();
+        idText.text = GetComponent<Hex>().id.ToString();
+        positionText.text = GetComponent<Node>().position.ToString();
     }
 }

@@ -36,7 +36,7 @@ public class AIManager : MonoBehaviour
             if (_aiCurrentGameNumber != 0)
                 FindObjectOfType<SaveMapManager>().LoadMap(_mapData);
             FindObjectOfType<ReplayManager>().CreateReplayData(DateTime.Now.ToString("dd-MM-yyyy_hhmmss_") + "no" + _aiCurrentGameNumber, _mapData);
-            Storage.characters[FindObjectOfType<GameManager>().Queue].GetComponent<Agent>().TakeAction();
+            Storage.characters[FindObjectOfType<GameManager>().queue].GetComponent<Agent>().TakeAction();
             
             FindObjectOfType<GameManager>().StartEditor();
         }

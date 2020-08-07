@@ -1,24 +1,25 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class AISettings : MonoBehaviour
 {
-    public Toggle ToggleA;
-    public Toggle ToggleB;
-    public InputField TurnInput;
+    public Toggle toggleA;
+    public Toggle toggleB;
+    public InputField turnInput;
 
     void Start()
     {
-        TurnInput.text = "2";
+        turnInput.text = "2";
     }
 
     public void OnToggleA()
     {
-        FindObjectOfType<AIManager>().aiEnabled = ToggleA.isOn;
+        FindObjectOfType<AIManager>().aiEnabled = toggleA.isOn;
     }
 
     public void TurnChange()
     {
-        FindObjectOfType<AIManager>().AiTurnNumber = int.Parse(TurnInput.text);
+        FindObjectOfType<AIManager>().AiTurnNumber = int.Parse(turnInput.text);
     }
 }
