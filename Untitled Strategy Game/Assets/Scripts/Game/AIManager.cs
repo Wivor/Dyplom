@@ -7,7 +7,7 @@ public class AIManager : MonoBehaviour
     public bool aiEnabled;
 
     private int _aiNumberOfTurns;
-    private int _aiNumberOfGames = 50;
+    private int _aiNumberOfGames;
     private int _aiCurrentGameNumber;
     private int _step;
     private MapData _mapData;
@@ -15,8 +15,8 @@ public class AIManager : MonoBehaviour
     private SaveMapManager _saveMapManager;
     private ReplayManager _replayManager;
 
-    public int AiTurnNumber { get => _aiNumberOfTurns; set => _aiNumberOfTurns = value; }
-    public int AiGamesNumber { get => _aiNumberOfGames; set => _aiNumberOfGames = value; }
+    public int AiNumberOfTurns { get => _aiNumberOfTurns; set => _aiNumberOfTurns = value; }
+    public int AiNumberOfGames { get => _aiNumberOfGames; set => _aiNumberOfGames = value; }
 
     private void Start()
     {

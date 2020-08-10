@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class AISettings : MonoBehaviour
@@ -7,10 +6,12 @@ public class AISettings : MonoBehaviour
     public Toggle toggleA;
     public Toggle toggleB;
     public InputField turnInput;
+    public InputField gamesInput;
 
     void Start()
     {
-        turnInput.text = "2";
+        turnInput.text = "5";
+        gamesInput.text = "10";
     }
 
     public void OnToggleA()
@@ -20,6 +21,11 @@ public class AISettings : MonoBehaviour
 
     public void TurnChange()
     {
-        FindObjectOfType<AIManager>().AiTurnNumber = int.Parse(turnInput.text);
+        FindObjectOfType<AIManager>().AiNumberOfTurns = int.Parse(turnInput.text);
+    }
+
+    public void GameChange()
+    {
+        FindObjectOfType<AIManager>().AiNumberOfGames = int.Parse(gamesInput.text);
     }
 }
