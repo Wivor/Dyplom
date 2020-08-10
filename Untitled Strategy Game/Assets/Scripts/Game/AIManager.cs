@@ -1,44 +1,95 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class AIManager : MonoBehaviour
 {
     public bool aiEnabled;
 
-    private int _aiTurnNumber;
-    private int _aiGamesNumber = 2;
+    private int _aiNumberOfTurns;
+    private int _aiNumberOfGames = 50;
     private int _aiCurrentGameNumber;
+    private int _step;
     private MapData _mapData;
-    
-    public int AiTurnNumber { get => _aiTurnNumber; set => _aiTurnNumber = value; }
-    public int AiGamesNumber { get => _aiGamesNumber; set => _aiGamesNumber = value; }
+    private GameManager _gameManager;
+    private SaveMapManager _saveMapManager;
+    private ReplayManager _replayManager;
+
+    public int AiTurnNumber { get => _aiNumberOfTurns; set => _aiNumberOfTurns = value; }
+    public int AiGamesNumber { get => _aiNumberOfGames; set => _aiNumberOfGames = value; }
+
+    private void Start()
+    {
+        _replayManager = FindObjectOfType<ReplayManager>();
+        _saveMapManager = FindObjectOfType<SaveMapManager>();
+        _gameManager = GetComponent<GameManager>();
+    }
+
+    /*
+     * Checks if game was started with AI enabled. If yes starts game loop and disables checking.
+     */
+    private void Update()
+    {
+        if (!aiEnabled || _gameManager.gameState != State.GAME) return;
+        enabled = false;
+        StartGame();
+    }
 
     /*
      * Used at the start of the game if AI is enabled.
-     * Saves MapData and starts LearningLoop.
+     * Saves information about map to @_mapData for map loading after every game. Then starts LearningLoop.
      */
-    public void StartGame()
+    private void StartGame()
     {
         _mapData = FindObjectOfType<SaveMapManager>().GetSaveData();
-        LearningLoop();
+        _step = 1;
+        StartCoroutine( LearningLoop());
     }
 
     /*
      * Replays game @_aiGamesNumber times.
-     * For every game loads map, creates new replay object, moves characters based on their policy and returns to editor at the end.
-     *
-     * #TODO issues with loading map in loop. Characters are not loading properly? 
+     * For every game goes through following steps:
+     * 0: Loads new map from @_mapData and then saits until map is fully loaded. Skipped at first
+     *     loop as map is already loaded at loop start.
+     * 1: Creates new object for replay of next game. Then starts the game and waits for it to load.
+     * 2: Makes AI move based on its policy until game hits @_aiTurnNumber turn. @_aiTurnNumber is set by user in UI.
+     * 3: Returns to editor and waits until it's loaded. Then increases @_aiCurrentGameNumber.
+     * Steps are repeated until @_aiCurrentGameNumber hits @_aiGamesNumber. #TODO @_aiGamesNumber is set in editor.
+     * At the end start checking for new loop request.
      */
-    private void LearningLoop()
+    private IEnumerator LearningLoop()
     {
-        for (_aiCurrentGameNumber = 0; _aiCurrentGameNumber <= _aiGamesNumber; _aiCurrentGameNumber++)
+        while (_aiCurrentGameNumber != _aiNumberOfGames)
         {
-            if (_aiCurrentGameNumber != 0)
-                FindObjectOfType<SaveMapManager>().LoadMap(_mapData);
-            FindObjectOfType<ReplayManager>().CreateReplayData(DateTime.Now.ToString("dd-MM-yyyy_hhmmss_") + "no" + _aiCurrentGameNumber, _mapData);
-            Storage.characters[FindObjectOfType<GameManager>().queue].GetComponent<Agent>().TakeAction();
+            switch (_step)
+            {
+                case 0:
+                    _saveMapManager.LoadMap(_mapData);
+                    yield return new WaitUntil(() => Storage.characters.TrueForAll(character => character.isReady));
+                    _step++;
+                    break;
             
-            FindObjectOfType<GameManager>().StartEditor();
+                case 1:
+                    _replayManager.CreateReplayData(DateTime.Now.ToString("dd-MM-yyyy_hhmmss_") + "no" + _aiCurrentGameNumber, _mapData);
+                    _gameManager.StartGame();
+                    yield return new WaitUntil(() => _gameManager.gameState == State.GAME);
+                    _step++;
+                    break;
+            
+                case 2:
+                    while (_gameManager.turn != _aiNumberOfTurns)
+                        Storage.characters[_gameManager.queue].GetComponent<Agent>().TakeAction();
+                    _step++;
+                    break;
+                
+                case 3:
+                    _gameManager.StartEditor();
+                    yield return new WaitUntil(() => _gameManager.gameState == State.EDITOR);
+                    _aiCurrentGameNumber++;
+                    _step = 0;
+                    break;
+            }
         }
+        enabled = true;
     }
 }

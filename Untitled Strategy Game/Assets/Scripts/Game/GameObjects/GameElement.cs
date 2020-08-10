@@ -6,6 +6,8 @@
 
 public abstract class GameElement : MonoBehaviour
 {
+    public bool isReady = false;
+    
     private GameManager _gameManager;
     private EditorStatistics _editorStatistics;
     private GameStatistics _gameStatistics;
@@ -18,6 +20,7 @@ public abstract class GameElement : MonoBehaviour
         _gameStatistics = FindObjectOfType<GameStatistics>();
         _mapEditor = FindObjectOfType<MapEditor>();
         Init();
+        isReady = true;
     }
 
     protected abstract void Init();

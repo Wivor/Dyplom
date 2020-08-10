@@ -8,12 +8,12 @@ public class GameManager : MonoBehaviour
     public Canvas gameCanvas;
     public GameObject actionsPanel;
     public Canvas replayCanvas;
-
+    public State gameState;
     public int queue;
     public int characterId = 0;
     public Action selectedAction;
+    public int turn = 1;
 
-    private int _turn = 1;
     private bool _replayPlaying = false;
 
     /*
@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        gameState = State.EDITOR;
         gameCanvas.enabled = false;
         editorCanvas.enabled = true;
 
@@ -57,9 +58,7 @@ public class GameManager : MonoBehaviour
 
         FindObjectOfType<TopCharacterPanel>().OnStart(Storage.characters);
         FindObjectOfType<ActionPanel>().SetActions(Storage.characters[0]);
-        
-        if (GetComponent<AIManager>().aiEnabled)
-            GetComponent<AIManager>().StartGame();
+        gameState = State.GAME;
     }
 
     /*
@@ -86,6 +85,7 @@ public class GameManager : MonoBehaviour
         AddQueueNumberTo(Storage.characters);
         
         actionsPanel.SetActive(false);
+        gameState = State.REPLAY;
     }
 
     /*
@@ -101,12 +101,13 @@ public class GameManager : MonoBehaviour
         _replayPlaying = false;
         characterId = 0;
         queue = 0;
-        _turn = 1;
+        turn = 1;
 
         Storage.ClearStorage();
         FindObjectOfType<Grid>().ClearGrid();
         EventManager.ClearEvents();
         FindObjectOfType<ReplayUI>().OnEditorStart();
+        gameState = State.EDITOR;
     }
 
     /*
@@ -129,23 +130,14 @@ public class GameManager : MonoBehaviour
         if (queue == Storage.characters.Count)
         {
             queue = 0;
-            _turn++;
-            FindObjectOfType<TurnChanger>().TurnText.text = "Turn " + _turn;
+            turn++;
+            FindObjectOfType<TurnChanger>().TurnText.text = "Turn " + turn;
 
             Storage.characters.ForEach(character => character.statistics.CurrentActionPoints = character.statistics.ActionPoints);
         }
         if (!_replayPlaying)
             FindObjectOfType<ActionPanel>().SetActions(Storage.characters[queue]);
         FindObjectOfType<TopCharacterPanel>().UpdateTopBar();
-
-        //infinite queue
-        if (GetComponent<AIManager>().aiEnabled && !_replayPlaying)
-        {
-            if(_turn <= GetComponent<AIManager>().AiTurnNumber)
-            {
-                Storage.characters[queue].GetComponent<Agent>().TakeAction();
-            }
-        }
     }
 
     /*
@@ -187,8 +179,6 @@ public class GameManager : MonoBehaviour
 
             if (character.statistics.CurrentActionPoints == 0)
                 EndTurn();
-            else if (GetComponent<AIManager>().aiEnabled && !_replayPlaying)
-                Storage.characters[queue].GetComponent<Agent>().TakeAction();
         }
     }
 
