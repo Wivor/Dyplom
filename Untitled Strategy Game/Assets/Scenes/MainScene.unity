@@ -1105,13 +1105,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22e69d290bb8f43438185a434814c1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NameText: {fileID: 224260566}
-  HeathText: {fileID: 167844511}
-  AttackText: {fileID: 1029661095}
-  InitiativeText: {fileID: 443145744}
-  RangeText: {fileID: 198796090}
-  MovementText: {fileID: 481172453}
-  ActionPointsText: {fileID: 809545751}
+  nameText: {fileID: 224260566}
+  heathText: {fileID: 167844511}
+  attackText: {fileID: 1029661095}
+  initiativeText: {fileID: 443145744}
+  rangeText: {fileID: 198796090}
+  movementText: {fileID: 481172453}
+  actionPointsText: {fileID: 809545751}
 --- !u!1 &130783355 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7294236806555602503, guid: ffe15b6b498482f49934e20d716ed138,
@@ -1136,7 +1136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd9c01ec78f5d648b67e0058d4dde3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonPrefab: {fileID: 6066151333154278340, guid: cc44b1bc601d2b148a773ee07e41a471,
+  buttonPrefab: {fileID: 6066151333154278340, guid: cc44b1bc601d2b148a773ee07e41a471,
     type: 3}
 --- !u!114 &130783360
 MonoBehaviour:
@@ -1677,10 +1677,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d34588e079373bf4a8797e627cab52b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectedImage: {fileID: 0}
-  SelectedCharacter: {fileID: 0}
-  TeamDropdown: {fileID: 1750819504}
-  Grid: {fileID: 311123358}
+  selectedImage: {fileID: 0}
+  selectedCharacter: {fileID: 0}
+  teamDropdown: {fileID: 1750819504}
+  grid: {fileID: 311123358}
   width: {fileID: 381342482}
   height: {fileID: 911606341}
 --- !u!224 &224260565
@@ -6001,9 +6001,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02ea47fafdf058f4fa38d95583928c2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ToggleA: {fileID: 158291574946389506}
-  ToggleB: {fileID: 1497202941}
-  TurnInput: {fileID: 948029698}
+  toggleA: {fileID: 158291574946389506}
+  toggleB: {fileID: 1497202941}
+  turnInput: {fileID: 948029698}
 --- !u!224 &1370898389 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1550153776550838399, guid: 235c715e26dcdca408476da458bef8e6,
@@ -7652,12 +7652,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71db95d333c7ecc4fb8f1004c62c7760, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NameText: {fileID: 1230308968}
-  HeathText: {fileID: 546789201}
-  AttackText: {fileID: 866250828}
-  InitiativeText: {fileID: 2146565658}
-  RangeText: {fileID: 645616670}
-  MovementText: {fileID: 510901125}
+  nameText: {fileID: 1230308968}
+  heathText: {fileID: 546789201}
+  attackText: {fileID: 866250828}
+  initiativeText: {fileID: 2146565658}
+  rangeText: {fileID: 645616670}
+  movementText: {fileID: 510901125}
 --- !u!1001 &1882430318
 PrefabInstance:
   m_ObjectHideFlags: 0

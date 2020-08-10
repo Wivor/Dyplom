@@ -43,12 +43,12 @@ public class ClickableInEditor : MonoBehaviour
 
                 if (mapEditor.teamDropdown.captionText.text == "Team A")
                 {
-                    obj.GetComponent<Renderer>().material = hex.teamAmat;
+                    obj.GetComponent<Renderer>().material = hex.teamAMat;
                     obj.GetComponent<Character>().teamId = 0;
                 }
                 else
                 {
-                    obj.GetComponent<Renderer>().material = hex.teamBmat;
+                    obj.GetComponent<Renderer>().material = hex.teamBMat;
                     obj.GetComponent<Character>().teamId = 1;
                 }
             }

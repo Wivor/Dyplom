@@ -207,8 +207,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b7499c8778bf154c9d3620b425e1ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TeamAmat: {fileID: 2100000, guid: fb03dd516191993499629321d85380a3, type: 2}
-  TeamBmat: {fileID: 2100000, guid: 2858a6cdbf9a5dd4bb23f30be7ad944d, type: 2}
+  teamAMat: {fileID: 2100000, guid: fb03dd516191993499629321d85380a3, type: 2}
+  teamBMat: {fileID: 2100000, guid: 2858a6cdbf9a5dd4bb23f30be7ad944d, type: 2}
   id: 24
   gameManager: {fileID: 0}
 --- !u!114 &-3873667732542687365
@@ -240,8 +240,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22e09796b984a5d449f34c60845189ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IDText: {fileID: 8524440062779927942}
-  PositionText: {fileID: 9181498774727322476}
+  idText: {fileID: 8524440062779927942}
+  positionText: {fileID: 9181498774727322476}
 --- !u!1 &4831988734411140809
 GameObject:
   m_ObjectHideFlags: 0

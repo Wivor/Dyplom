@@ -7,8 +7,8 @@ using UnityEngine.Serialization;
 
 public class Hex : MonoBehaviour
 {
-    public Material teamAmat;
-    public Material teamBmat;
+    public Material teamAMat;
+    public Material teamBMat;
 
     public int id;
     public GameManager gameManager;

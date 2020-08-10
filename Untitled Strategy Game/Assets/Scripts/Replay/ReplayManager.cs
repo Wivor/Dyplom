@@ -115,9 +115,9 @@ public class ReplayManager : MonoBehaviour
         FindObjectOfType<GameManager>().AddNewCharacter(character.GetComponent<Character>());
 
         if (stats.Team == "Team A")
-            character.GetComponent<Renderer>().material = hex.teamAmat;
+            character.GetComponent<Renderer>().material = hex.teamAMat;
         else
-            character.GetComponent<Renderer>().material = hex.teamBmat;
+            character.GetComponent<Renderer>().material = hex.teamBMat;
     }
 
     public void ClearReplay()
