@@ -1,34 +1,37 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
     public Transform hexPrefab;
     private int _id = 0;
 
-    public int GridWidth { get; private set; }
-    public int GridHeight { get; private set; }
-
-    private float _hexWidth = 1.732f;
-    private float _hexHeight = 2.0f;
-    private const float Gap = 0.1f;
 
     private Vector3 _startPos;
+    private float _hexWidth;
+    private float _hexHeight;
+    private float _offset;
+    private int _gridWidth;
+    private int _gridHeight;
+    private const float Size = 1;
+    private const float Gap = 0.1f;
+
+    public int GridWidth { get => _gridWidth; private set => _gridWidth = value; }
+    public int GridHeight { get => _gridHeight; private set => _gridHeight = value; }
 
     private Grid()
     {
-        AddGap();
+        CalcHexSize();
     }
 
     public void GenerateGrid(int width, int height)
     {
+        _gridWidth = width;
+        _gridHeight = height;
+        
         ClearGrid();
-
-        GridWidth = width;
-        GridHeight = height;
-       
         CalcStartPos();
         CreateGrid();
-
         ConnectNeighbours();
     }
 
@@ -40,41 +43,33 @@ public class Grid : MonoBehaviour
             Destroy(child.gameObject);
     }
 
-    void AddGap()
+    private void AddGap()
     {
         _hexWidth += _hexWidth * Gap;
         _hexHeight += _hexHeight * Gap;
     }
 
-    void CalcStartPos()
+    private void CalcHexSize()
     {
-        float offset = 0;
-        if (GridHeight / 2 % 2 != 0)
-            offset = _hexWidth / 2;
+        _hexWidth = (float)Math.Sqrt(3) * Size;
+        _hexHeight = Size * 2;
+        _offset = _hexWidth / 2;
+        AddGap();
+    }
 
-        float x = -_hexWidth * (GridWidth / 2) - offset;
-        float z = _hexHeight * 0.75f * (GridHeight / 2);
+    private void CalcStartPos()
+    {
+        float x = -_hexWidth * (_gridWidth / 2);
+        float z = _hexHeight * (_gridHeight / 2);
 
         _startPos = new Vector3(x, 0, z);
     }
 
-    Vector3 CalcWorldPos(Vector2 gridPos)
-    {
-        float offset = 0;
-        if (gridPos.y % 2 != 0)
-            offset = _hexWidth / 2;
-
-        float x = _startPos.x + gridPos.x * _hexWidth + offset;
-        float z = _startPos.z - gridPos.y * _hexHeight * 0.75f;
-
-        return new Vector3(x, 0, z);
-    }
-
     private void CreateGrid()
     {
-        for (int y = 0; y < GridHeight; y++)
+        for (int y = 0; y < _gridHeight; y++)
         {
-            for (int x = 0; x < GridWidth; x++)
+            for (int x = 0; x < _gridWidth; x++)
             {
                 Transform hex = Instantiate(hexPrefab, transform, true);
                 Vector2 gridPos = new Vector2(x, y);
@@ -88,8 +83,21 @@ public class Grid : MonoBehaviour
             }
         }
     }
+    
+    Vector3 CalcWorldPos(Vector2 gridPos)
+    {
+        float x;
+        if (gridPos.y % 2 != 0)
+            x = _startPos.x + gridPos.x * _hexWidth + _offset;
+        else
+            x = _startPos.x + gridPos.x * _hexWidth ;
 
-    void ConnectNeighbours()
+        float z = _startPos.z - gridPos.y * _hexHeight * 0.75f;
+        
+        return new Vector3(x, 0, z);
+    }
+
+    private void ConnectNeighbours()
     {
         foreach (Hex hex in Storage.hexes)
         {
